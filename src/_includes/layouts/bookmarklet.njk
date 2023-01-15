@@ -1,0 +1,54 @@
+---
+layout: base.njk
+---
+<div class="section">
+  <div class="container is-max-desktop">
+    <div class="content">
+      <h1 class="is-family-secondary">{{ title }}</h1>
+      {{ content | safe }}
+    </div>
+  </div>
+</div>
+
+<div class="section has-background-light">
+  <div class="container is-max-desktop">
+    <dl class="block is-flex-desktop is-flex-wrap-wrap is-justify-content-center">
+      <div class="is-flex mx-3 my-1">
+        <dt class="has-text-weight-semibold mr-2">Created</dt>
+        <dd>{{ date | dateFormat }}</dd>
+      </div>
+
+      {% if updated %}
+        <div class="is-flex mx-3 my-1">
+          <dt class="has-text-weight-semibold mr-2">Updated</dt>
+          <dd>{{ updated | dateFormat }}</dd>
+        </div>
+      {% endif %}
+
+      <div class="is-flex mx-3 my-1">
+        <dt class="has-text-weight-semibold mr-2">Bookmarklet size</dt>
+        <dd>{{ size | size }}</dd>
+      </div>
+    </dl>
+
+    <div class="has-text-centered-desktop my-6">
+      <p class="is-size-5 mb-2">Drag this link to your bookmarks to save it.</p>
+      <a class="button is-link is-medium" href="{{ bookmarkUrl | url }}">
+        <span class="icon">
+          <span class="mdi mdi-bookmark" aria-hidden="true"></span>
+        </span>
+        <span>{{ title }}</span>
+      </a>
+    </div>
+
+    <div class="mt-6">
+      <h2 class="is-size-4 is-family-secondary">Bookmarklet code</h2>
+      {%- for file in files -%}
+        <div class="mb-6">
+          <h3 class="is-size-5">{{ file.name }}</h3>
+          {% highlight file.lang %}{{ file.content | safe }}{% endhighlight %}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>

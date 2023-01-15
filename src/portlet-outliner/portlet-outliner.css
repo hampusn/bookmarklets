@@ -1,0 +1,148 @@
+/* GENERAL PORTLET STYLING */
+div[class*="portlet"][id],
+div[class*="sv-custom-module"][id] {
+  outline: 1px solid rgba(0, 0, 0, 0.4);
+  position: relative !important;
+}
+div[class*="portlet"][id]:after,
+div[class*="sv-custom-module"][id]:after {
+  background: #000;
+  content: attr(class);
+  color: #fff;
+  font-size: 15px;
+  line-height: 1.2;
+  opacity: 0.5;
+  padding: 0.2em 0.5em;
+  position: absolute;
+  right: 0;
+  text-align: right;
+  top: 0;
+  z-index: 10;
+}
+div[class*="portlet"][id]:hover:after,
+div[class*="sv-custom-module"][id]:hover:after {
+  opacity: 1;
+  z-index: 20;
+}
+div[class*="portlet"][id]:hover > div[id]:first-child:after,
+div[class*="sv-custom-module"][id]:hover > div[id]:first-child:after {
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  content: attr(id);
+  display: block;
+  font-size: 15px;
+  left: 0;
+  line-height: 1;
+  padding: 0.3em;
+  position: absolute;
+  top: 0;
+}
+
+/* PORTLET BACKGROUNDS */
+/* Standard portlets */
+.sv-text-portlet,
+.sv-image-portlet {
+  outline-color: rgba(0, 255, 0, 0.4) !important;
+}
+.sv-text-portlet:after,
+.sv-image-portlet:after {
+  background: green !important;
+}
+
+/* Integration portlets */
+.sv-script-portlet,
+.sv-html-portlet,
+.sv-iframe-portlet {
+  outline-color: rgba(255, 0, 0, 0.4) !important;
+}
+.sv-script-portlet:after,
+.sv-html-portlet:after,
+.sv-iframe-portlet:after {
+  background: #f00 !important;
+}
+
+/* Templating portlets */
+.sv-jcrmenu-portlet,
+.sv-searchform-portlet,
+.sv-multilevellink-portlet,
+.sv-related-portlet {
+  outline-color: rgba(150, 150, 0, 0.4) !important;
+}
+.sv-jcrmenu-portlet:after,
+.sv-searchform-portlet:after,
+.sv-multilevellink-portlet:after,
+.sv-related-portlet:after {
+  background: rgb(150, 150, 0) !important;
+}
+
+/* Interactive portlets */
+.sv-form-portlet,
+.sv-simplesubscription-portlet {
+  outline-color: rgba(0, 150, 150, 0.4) !important;
+}
+.sv-form-portlet:after,
+.sv-simplesubscription-portlet:after {
+  background: rgb(0, 150, 150) !important;
+}
+
+/* Social media portlets */
+.sv-twittersearch-portlet {
+  outline-color: rgba(255, 0, 254, 0.4) !important;
+}
+.sv-twittersearch-portlet:after {
+  background: #ff00fe !important;
+}
+
+/* Misc portlets */
+.sv-archive-portlet,
+.sv-eventcalendar-portlet {
+  outline-color: rgba(0, 0, 255, 0.4) !important;
+}
+.sv-archive-portlet:after,
+.sv-eventcalendar-portlet:after {
+  background: blue !important;
+}
+
+/* PORTLET LABELS */
+.sv-text-portlet:after {
+  content: "Text" !important;
+}
+.sv-image-portlet:after {
+  content: "Image" !important;
+}
+.sv-script-portlet:after {
+  content: "Script" !important;
+}
+.sv-html-portlet:after {
+  content: "HTML" !important;
+}
+.sv-iframe-portlet:after {
+  content: "Iframe" !important;
+}
+.sv-archive-portlet:after {
+  content: "News" !important;
+}
+.sv-jcrmenu-portlet:after {
+  content: "Menu" !important;
+}
+.sv-form-portlet:after {
+  content: "Email form" !important;
+}
+.sv-searchform-portlet:after {
+  content: "Search field" !important;
+}
+.sv-multilevellink-portlet:after {
+  content: "Multi-level link" !important;
+}
+.sv-related-portlet:after {
+  content: "Related information" !important;
+}
+.sv-simplesubscription-portlet:after {
+  content: "Subscribe" !important;
+}
+.sv-twittersearch-portlet:after {
+  content: "Twitter search" !important;
+}
+.sv-eventcalendar-portlet:after {
+  content: "Event calendar" !important;
+}

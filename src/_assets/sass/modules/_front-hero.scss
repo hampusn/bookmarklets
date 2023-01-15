@@ -1,0 +1,55 @@
+@use 'bulma/sass/utilities/mixins';
+
+.front-hero__body {
+  justify-content: center;
+}
+
+.front-hero__column {
+  max-width: 30rem;
+
+  @include mixins.mobile {
+    max-width: initial;
+  }
+}
+
+.front-hero__graphic {
+  --graphic-size: 30rem;
+  height: var(--graphic-size);
+  position: relative;
+  width: var(--graphic-size);
+
+  @include mixins.until-widescreen {
+    --graphic-size: 25rem;
+  }
+
+  @include mixins.touch {
+    --graphic-size: 15rem;
+  }
+
+  @include mixins.mobile {
+    --graphic-size: 10rem;
+  }
+}
+
+.front-hero__graphic__bookmark,
+.front-hero__graphic__cog {
+  height: 1em;
+  width: 1em;
+}
+
+.front-hero__graphic__bookmark {
+  font-size: var(--graphic-size);
+}
+
+.front-hero__graphic__cog {
+  --cog-size: calc(var(--graphic-size) * 0.4);
+  font-size: var(--cog-size);
+  left: calc(50% - var(--cog-size) / 2);
+  position: absolute;
+  top: calc(45% - var(--cog-size) / 2);
+}
+
+.front-hero__graphic__cog {
+  -webkit-animation: rotate-center 60s linear infinite both;
+  animation: rotate-center 60s linear infinite both;
+}

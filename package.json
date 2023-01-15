@@ -1,0 +1,35 @@
+{
+  "name": "bookmarklets",
+  "version": "0.1.0",
+  "description": "",
+  "scripts": {
+    "assets:css": "sass --load-path=./node_modules ./src/_assets/sass/main.scss ./dist/assets/css/main.css",
+    "assets:js": "rollup ./src/_assets/js/main.js --file ./dist/assets/js/main.js --format iife",
+    "clean": "rm -rf ./dist",
+    "build:assets": "npm-run-all assets:*",
+    "build:eleventy": "npx @11ty/eleventy",
+    "build": "npm-run-all clean build:*",
+    "watch:css": "npm run assets:css -- --watch",
+    "watch:js": "npm run assets:js -- --watch",
+    "watch:eleventy": "npx @11ty/eleventy --serve",
+    "dev": "npm-run-all --parallel watch:*"
+  },
+  "author": "Hampus Nordin <nordin.hampus@gmail.com> (https://hampus.io/)",
+  "license": "ISC",
+  "devDependencies": {
+    "@11ty/eleventy": "^1.0.2",
+    "@11ty/eleventy-plugin-syntaxhighlight": "^4.2.0",
+    "@mdi/font": "^7.1.96",
+    "@rollup/plugin-terser": "^0.3.0",
+    "bulma": "^0.9.4",
+    "date-fns": "^2.29.3",
+    "glob": "^8.0.3",
+    "glob-promise": "^6.0.1",
+    "npm-run-all": "^4.1.5",
+    "pretty-bytes": "^5.6.0",
+    "rollup": "^3.9.0",
+    "rollup-plugin-string": "^3.0.0",
+    "sass": "^1.57.1",
+    "terser": "^5.16.1"
+  }
+}

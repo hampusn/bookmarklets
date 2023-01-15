@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="{{ metadata.language }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title or metadata.title }}</title>
+    <meta name="description" content="{{ description or metadata.description }}">
+    <link rel="stylesheet" href="{{ '/assets/css/main.css' | url }}">
+  </head>
+  <body class="{{ layout | templateBodyClass }} {{ bodyClass }}">
+    <div class="page is-flex is-flex-direction-column">
+      <header class="page-header">
+        <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+          <div class="navbar-brand">
+            <a class="home-item navbar-item" href="{{ '/' | url }}">
+              <span class="home-item__icon icon is-large">
+                <span class="mdi mdi-bookmark-multiple" aria-hidden="true"></span>
+              </span>
+              <span class="home-item__text is-family-secondary pr-4">{{ metadata.title }}</span>
+            </a>
+
+            <a role="button" class="navbar-burger" aria-label="Menu" aria-expanded="false" data-target="menu">
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+            </a>
+          </div>
+
+          <div id="menu" class="navbar-menu">
+            <div class="navbar-end">
+              <div class="navbar-item">
+                <div class="buttons">
+                  <a class="button is-secondary" href="https://github.com/hampusn/bookmarklets#readme">
+                    <span class="icon">
+                      <span class="mdi mdi-github" aria-hidden="true"></span>
+                    </span>
+                    <strong>Github</strong>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </header><!--! .page-header -->
+
+      <main class="page-main is-flex-grow-1 {% if page.url == "/" %}has-background-primary{% else %}{% endif %}">
+        {{ content | safe }}
+      </main><!--! .page-main -->
+
+      <footer class="page-footer section has-background-grey-lighter">
+        <div class="container">
+          <p class="has-text-centered">
+            <a class="page-footer__link" href="https://github.com/hampusn/bookmarklets#readme">
+              <strong>bookmarklets</strong>
+              <span class="icon" aria-label="External link"><span aria-hidden="true" class="mdi mdi-open-in-new"></span></span>
+            </a>
+            is created by
+            <a class="page-footer__link" href="https://hampus.io/">
+              <strong>Hampus Nordin</strong>
+              <span class="icon" aria-label="External link"><span aria-hidden="true" class="mdi mdi-open-in-new"></span></span>
+            </a>
+          </p>
+        </div>
+      </footer><!--! .page-footer -->
+    </div><!--! .page -->
+
+
+    <div id="bookmarklet-drag" class="bookmarklet-drag"></div>
+    <script src="{{ '/assets/js/main.js' | url }}"></script>
+    <!-- Current page: {{ page.url | url }} -->
+  </body>
+</html>

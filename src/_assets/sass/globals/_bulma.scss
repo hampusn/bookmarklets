@@ -1,0 +1,92 @@
+@use "bulma/sass/utilities/initial-variables";
+@use "bulma/sass/utilities/functions";
+
+// Set your brand colors
+/*
+$purple: #8A4D76;
+$pink: #FA7C91;
+$brown: #757763;
+$beige-light: #D0D1CD;
+$beige-lighter: #EFF0EB;
+*/
+
+$color-oxford-blue: #001427;
+$color-xanadu: #708D81;
+$color-jasmine: #F4D58D;
+$color-international-orange-engineering: #BF0603;
+$color-dark-red: #8D0801;
+$color-white: #FCFAF9;
+$color-charcoal: #364156;
+$color-light-gray: #CDCDCD;
+
+$body-background-color: $color-white;
+$primary: $color-oxford-blue;
+$light: $color-jasmine;
+
+$secondary: $color-international-orange-engineering;
+$secondary-invert: functions.findColorInvert($secondary);
+$secondary-light: functions.findLightColor($secondary);
+$secondary-dark: $color-dark-red;
+
+/*
+$primary-invert: findColorInvert($primary) !default
+$primary-light: findLightColor($primary) !default
+$primary-dark: findDarkColor($primary) !default
+*/
+
+/*
+$info: $cyan !default
+$success: $green !default
+$warning: $yellow !default
+$danger: $red !default
+
+$light: $white-ter !default
+$dark: $grey-darker !default
+*/
+
+$custom-colors: ("secondary": ($secondary, $secondary-invert, $secondary-light, $secondary-dark));
+
+// "primary": ($primary, $primary-invert, $primary-light, $primary-dark)
+
+
+$body-size: 18px;
+$family-secondary: "Inter Tight", sans-serif;
+
+$desktop: 800px + (2 * initial-variables.$gap);
+
+/*$grey-dark: $brown;
+$grey-light: $beige-light;
+$primary: $purple;
+$link: $pink;
+$widescreen-enabled: false;
+$fullhd-enabled: false;
+
+// Update some of Bulma's component variables
+$body-background-color: $beige-lighter;
+$control-border-width: 2px;
+$input-border-color: transparent;
+$input-shadow: none;
+*/
+
+// Import Bulma
+@import "bulma/bulma.sass";
+
+
+// Bulma fixes and overrides
+.token.number, .token.tag {
+  all: inherit;
+}
+
+code {
+  background-color: rgba(10, 10, 10, .10);
+  border-radius: 0.25em;
+  padding: 0.25em 0.35em 0.25em;
+}
+
+.content a {
+  text-decoration: underline;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
