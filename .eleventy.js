@@ -1,48 +1,8 @@
-const syntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
-const { parseISO, isDate, format } = require('date-fns');
-const prettyBytes = require('pretty-bytes');
+const glob = require('glob');
+const fs = require('fs');
 
 module.exports = function (eleventyConfig) {
-  // Config
-  eleventyConfig.setLiquidOptions({
-    jsTruthy: true
-  });
-  eleventyConfig.addWatchTarget('./src/**/*');
-  eleventyConfig.addPassthroughCopy({
-    'src/_assets/fonts': 'assets/fonts',
-    'node_modules/@mdi/font/fonts': 'assets/fonts',
-  });
-  eleventyConfig.addPassthroughCopy('./src/**/*.gif');
-
-  // Plugins
-  eleventyConfig.addPlugin(syntaxHighlight);
-
-  // Filters
-  eleventyConfig.addFilter('templateBodyClass', (template) => {
-    const tpl = String(template)
-      .toLowerCase()
-      .replace(/(\..*)$/, '')
-      .replace(/([^a-z0-9]+)/g, '-');
-
-    return `template-${tpl}`;
-  });
-  eleventyConfig.addFilter('debug', (obj) => {
-    return `<pre><code>${JSON.stringify(obj, null, 2)}</code></pre>`;
-  });
-  eleventyConfig.addFilter('dateFormat', (date, dateFormat = 'yyyy-MM-dd') => {
-    return date ? format(isDate(date) ? date : parseISO(date), dateFormat) : '';
-  });
-  eleventyConfig.addFilter('size', (size) => prettyBytes(size));
-
-  // Collections
-  eleventyConfig.addCollection('bookmarklets', (collectionApi) => {
-    return collectionApi.getAll()
-      .filter((item) => !!item.data.bookmarkUrl)
-      .sort((a, b) => b.date - a.date);
-  });
-
-  // Return config object
-  return {
+  const config = {
     dir: {
       input: 'src',
       output: 'dist',
@@ -50,5 +10,37 @@ module.exports = function (eleventyConfig) {
       data: '_data',
       layouts: '_includes/layouts'
     }
-  }
+  };
+
+  // Config
+  eleventyConfig.setLiquidOptions({
+    jsTruthy: true
+  });
+  eleventyConfig.setServerPassthroughCopyBehavior('copy'); // Eleventy fails on fonts copy when not used.
+  eleventyConfig.addWatchTarget('./src/**/*');
+  eleventyConfig.addPassthroughCopy({
+    'node_modules/@mdi/font/fonts': 'assets/fonts',
+    './src/_assets/fonts': 'assets/fonts',
+  });
+  // eleventyConfig.addPassthroughCopy does not support changing target path
+  // so I had to write custom copy with glob below.
+  glob(`./${config.dir.input}/bookmarklets/**/*.{gif,png,jpg,webp}`, (err, files) => {
+    for (const file of files) {
+      const target = file.replace(`${config.dir.input}/bookmarklets`, config.dir.output);
+      fs.cp(file, target, (err) => {
+        if (err) {
+          console.error(`Could not copy bookmarklet asset: ${file}`, err);
+        } else {
+          console.log(`Copied bookmarklet asset: ${file}`);
+        }
+      });
+    }
+  });
+
+  require('./.eleventy/collections')(eleventyConfig);
+  require('./.eleventy/filters')(eleventyConfig);
+  require('./.eleventy/plugins')(eleventyConfig);
+
+  // Return config object
+  return config;
 };

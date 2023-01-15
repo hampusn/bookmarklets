@@ -43,20 +43,32 @@
         </nav>
       </header><!--! .page-header -->
 
-      <main class="page-main is-flex-grow-1 {% if page.url == "/" %}has-background-primary{% else %}{% endif %}">
+      <main class="page-main is-flex-grow-1 {% if page.url == "/" %}has-background-primary{% endif %}">
+        {% if draft %}
+          <div class="mt-4">
+            <div class="container is-max-desktop">
+              <div class="message is-danger">
+                <div class="message-body">
+                  <strong>Warning!</strong> This is a draft and will not be included in a production build.
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+
         {{ content | safe }}
       </main><!--! .page-main -->
 
-      <footer class="page-footer section has-background-grey-lighter">
+      <footer class="page-footer section has-background-secondary-dark has-text-white py-5">
         <div class="container">
           <p class="has-text-centered">
-            <a class="page-footer__link" href="https://github.com/hampusn/bookmarklets#readme">
+            <a class="page-footer__link has-text-white" href="https://github.com/hampusn/bookmarklets#readme">
               <strong>bookmarklets</strong>
               <span class="icon" aria-label="External link"><span aria-hidden="true" class="mdi mdi-open-in-new"></span></span>
             </a>
             is created by
-            <a class="page-footer__link" href="https://hampus.io/">
-              <strong>Hampus Nordin</strong>
+            <a class="page-footer__link has-text-white" href="{{ pkg.author.url | url }}">
+              <strong>{{ pkg.author.name }}</strong>
               <span class="icon" aria-label="External link"><span aria-hidden="true" class="mdi mdi-open-in-new"></span></span>
             </a>
           </p>
