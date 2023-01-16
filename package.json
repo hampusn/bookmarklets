@@ -1,7 +1,13 @@
 {
   "name": "bookmarklets",
   "version": "0.1.0",
-  "description": "",
+  "description": "A site for storing my personal bookmarklets. Powered by 11ty.",
+  "homepage": "https://github.com/hampusn/bookmarklets#readme",
+  "bugs": "https://github.com/hampusn/bookmarklets/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hampusn/bookmarklets.git"
+  },
   "scripts": {
     "assets:css": "sass --load-path=./node_modules ./src/_assets/sass/main.scss ./dist/assets/css/main.css",
     "assets:js": "rollup ./src/_assets/js/main.js --file ./dist/assets/js/main.js --format iife",
