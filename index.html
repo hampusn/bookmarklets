@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home of bookmarklets</title>
+    <meta name="description" content="A collection of bookmarklets. Mostly related to the CMS Sitevision.">
+    <link rel="stylesheet" href="/assets/css/main.css">
+  </head>
+  <body class="template-wide-page page-home">
+    <div class="page is-flex is-flex-direction-column">
+      <header class="page-header">
+        <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+          <div class="navbar-brand">
+            <a class="home-item navbar-item" href="/">
+              <span class="home-item__icon icon is-large">
+                <span class="mdi mdi-bookmark-multiple" aria-hidden="true"></span>
+              </span>
+              <span class="home-item__text is-family-secondary pr-4">Bookmarklets</span>
+            </a>
+
+            <a role="button" class="navbar-burger" aria-label="Menu" aria-expanded="false" data-target="menu">
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+            </a>
+          </div>
+
+          <div id="menu" class="navbar-menu">
+            <div class="navbar-end">
+              <div class="navbar-item">
+                <div class="buttons">
+                  <a class="button is-secondary" href="https://github.com/hampusn/bookmarklets#readme">
+                    <span class="icon">
+                      <span class="mdi mdi-github" aria-hidden="true"></span>
+                    </span>
+                    <strong>Github</strong>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </header><!--! .page-header -->
+
+      <main class="page-main is-flex-grow-1 has-background-primary">
+        
+
+        <section class="front-hero hero is-light is-halfheight">
+  <div class="front-hero__body hero-body py-2">
+    <hgroup class="front-hero__column front-hero__column--text is-flex-grow-1 mr-6">
+      <h1 class="title is-family-secondary has-text-centered-mobile">A collection of bookmarklets</h1>
+      <p class="subtitle mb-3 has-text-centered-mobile">Mostly related to Sitevision</p>
+      <p>This site was built to host various bookmarklets and simplify the development of them. Most of the bookmarklets will probably be related to Sitevision, which is the system I primarily work with.</p>
+    </hgroup>
+    <div class="front-hero__column front-hero__column--graphic is-flex-grow-1">
+      <div class="front-hero__graphic">
+        <span aria-hidden="true" class="front-hero__graphic__bookmark icon"><span class="mdi mdi-bookmark-outline"></span></span>
+        <span aria-hidden="true" class="front-hero__graphic__cog icon"><span class="mdi mdi-cog"></span></span>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section">
+  <h2 class="is-size-2 is-family-secondary has-text-white">Bookmarklets</h2>
+  <ul class="columns is-multiline my-4"><li class="column is-one-third">
+      <div class="box">
+        <h3 class="is-size-4 mb-2"><a href="/sitevision-navigation/">Sitevision navigation</a></h3><p class="mb-4">Lets you navigate to direct children of the current page.</p><a class="button is-link is-medium is-fullwidth" href="javascript:!function()%7B%22use%20strict%22%3B((t%2Ce%2Cn)%3D%3E%7Bconst%20o%3D%22sitevision-navigation-dialog%22%2Cs%3D%22env-modal-dialog%22%2Ci%3D%22sv%3Apage%22%2C%7Borigin%3Aa%7D%3Dt.location%2C%7BpageId%3Ar%7D%3Dt.sv%3F.PageContext%7C%7C%7B%7D%2Cl%3DencodeURIComponent(JSON.stringify(%7Bincludes%3A%5Bi%2C%22sv%3Afolder%22%5D%2Cproperties%3A%5B%22URI%22%5D%7D))%2Cd%3D%7Bheaders%3A%7B%22Content-Type%22%3A%22application%2Fjson%22%2CAccept%3A%22application%2Fjson%22%7D%7D%2Cc%3De.getElementById(o)%3Bc%26%26c.parentNode.removeChild(c)%3Bconst%20u%3Dasync%20t%3D%3E%7Btry%7Bconst%20r%3D%60%24%7Ba%7D%2Frest-api%2F1%2F1%2F%24%7Bt%7D%2Fnodes%3Fformat%3Djson%26json%3D%24%7Bl%7D%60%2Cc%3Dawait%20fetch(r%2Cd)%2Cg%3D%7BnodeId%3At%2Cstatus%3Ac.status%2CstatusText%3Ac.statusText%2Curl%3Ar%2C_response%3Ac%7D%3Bif(!c.ok)%7Bif(console.error(g)%2C401%3D%3D%3Dc.status)throw%22Missing%20authentication.%20Are%20you%20logged%20in%3F%22%3Bthrow%60Something%20went%20wrong.%20Status%20%24%7Bc.status%7D%60%7Dconst%20h%3Dawait%20c.json()%3Bif(!Array.isArray(h)%7C%7C0%3D%3D%3Dh.length)throw%20console.error(%7Bresult%3Ah%2C...g%7D)%2C%22No%20results%20found.%22%3Bif(0%3D%3D%3Dh.filter(((%7Btype%3At%7D)%3D%3Et%3D%3D%3Di)).length)return%20void%20u(h%5B0%5D.id)%3Bconst%20v%3D%60%3Cdiv%20id%3D%22%24%7Bo%7D%22%20class%3D%22%24%7Bs%7D%20%24%7Bs%7D--inner-scroll%22%20role%3D%22dialog%22%20aria-modal%3D%22true%22%20aria-labelledby%3D%22%24%7Bo%7D-heading%22%20aria-hidden%3D%22true%22%20tabindex%3D%22-1%22%3E%5Cn%20%20%20%20%20%20%20%20%3Cdiv%20class%3D%22%24%7Bs%7D__dialog%22%3E%5Cn%20%20%20%20%20%20%20%20%20%20%3Csection%20class%3D%22%24%7Bs%7D__content%22%3E%5Cn%20%20%20%20%20%20%20%20%20%20%20%20%3Cheader%20class%3D%22%24%7Bs%7D__header%22%3E%5Cn%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Ch5%20class%3D%22env-text%20%24%7Bs%7D__header__title%22%20id%3D%22%24%7Bo%7D-heading%22%3ESub%20pages%3C%2Fh5%3E%5Cn%20%20%20%20%20%20%20%20%20%20%20%20%3C%2Fheader%3E%5Cn%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20class%3D%22%24%7Bs%7D__body%22%3E%20%20%20%20%20%20%20%20%20%20%20%20%5Cn%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cul%20class%3D%22env-list%22%3E%5Cn%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%24%7Bh.filter(((%7Btype%3At%7D)%3D%3Et%3D%3D%3Di)).map((t%3D%3E%60%3Cli%20class%3D%22env-list__item%22%3E%3Ca%20class%3D%22env-button%20env-button--link%22%20href%3D%22%24%7Bt.properties.URI%7D%22%3E%24%7Bt.name%7D%3C%2Fa%3E%3C%2Fli%3E%60)).join(%22%22)%7D%5Cn%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3C%2Ful%3E%5Cn%20%20%20%20%20%20%20%20%20%20%20%20%3C%2Fdiv%3E%5Cn%20%20%20%20%20%20%20%20%20%20%20%20%3Cfooter%20class%3D%22%24%7Bs%7D__footer%20%24%7Bs%7D__footer--right%22%3E%5Cn%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cbutton%20type%3D%22button%22%20data-modal-dialog-dismiss%20class%3D%22env-button%22%3EClose%3C%2Fbutton%3E%5Cn%20%20%20%20%20%20%20%20%20%20%20%20%3C%2Ffooter%3E%5Cn%20%20%20%20%20%20%20%20%20%20%3C%2Fsection%3E%5Cn%20%20%20%20%20%20%20%20%3C%2Fdiv%3E%5Cn%20%20%20%20%20%20%3C%2Fdiv%3E%60%3Be.body.insertAdjacentHTML(%22beforeend%22%2Cv)%2Cn.dialog(%22%23%22%2Bo).then((function(t)%7Bt%5B0%5D.show()%7D))%7Dcatch(t)%7Bconsole.error(t)%2Ce.dispatchEvent(new%20CustomEvent(%22sv-publish-toast%22%2C%7Bdetail%3A%7Bheading%3A%22Error!%22%2Cmessage%3AString(t)%7D%7D))%7D%7D%3Bu(r)%7D)(window%2Cdocument%2Cenvision)%7D()%3B" aria-label="Bookmark for Sitevision navigation">
+          <span class="icon">
+            <span class="mdi mdi-bookmark" aria-hidden="true"></span>
+          </span>
+          <span>Sitevision navigation</span>
+        </a>
+      </div>
+    </li><li class="column is-one-third">
+      <div class="box">
+        <h3 class="is-size-4 mb-2"><a href="/portlet-outliner/">Portlet outliner</a></h3><p class="mb-4">Outlines Sitevision portlets on the page.</p><a class="button is-link is-medium is-fullwidth" href="javascript:!function()%7B%22use%20strict%22%3B(t%3D%3E%7Bconst%20n%3D%22portlet-outliner%22%2Ce%3Dt.getElementById(n)%3Be%3Fe.sheet.disabled%3D!e.sheet.disabled%3At.head.insertAdjacentHTML(%22beforeend%22%2C%60%3Cstyle%20id%3D%22%24%7Bn%7D%22%3E%2F*%20GENERAL%20PORTLET%20STYLING%20*%2F%5Cndiv%5Bclass*%3D%22portlet%22%5D%5Bid%5D%2C%5Cndiv%5Bclass*%3D%22sv-custom-module%22%5D%5Bid%5D%20%7B%5Cn%20%20outline%3A%201px%20solid%20rgba(0%2C%200%2C%200%2C%200.4)%3B%5Cn%20%20position%3A%20relative%20!important%3B%5Cn%7D%5Cndiv%5Bclass*%3D%22portlet%22%5D%5Bid%5D%3Aafter%2C%5Cndiv%5Bclass*%3D%22sv-custom-module%22%5D%5Bid%5D%3Aafter%20%7B%5Cn%20%20background%3A%20%23000%3B%5Cn%20%20content%3A%20attr(class)%3B%5Cn%20%20color%3A%20%23fff%3B%5Cn%20%20font-size%3A%2015px%3B%5Cn%20%20line-height%3A%201.2%3B%5Cn%20%20opacity%3A%200.5%3B%5Cn%20%20padding%3A%200.2em%200.5em%3B%5Cn%20%20position%3A%20absolute%3B%5Cn%20%20right%3A%200%3B%5Cn%20%20text-align%3A%20right%3B%5Cn%20%20top%3A%200%3B%5Cn%20%20z-index%3A%2010%3B%5Cn%7D%5Cndiv%5Bclass*%3D%22portlet%22%5D%5Bid%5D%3Ahover%3Aafter%2C%5Cndiv%5Bclass*%3D%22sv-custom-module%22%5D%5Bid%5D%3Ahover%3Aafter%20%7B%5Cn%20%20opacity%3A%201%3B%5Cn%20%20z-index%3A%2020%3B%5Cn%7D%5Cndiv%5Bclass*%3D%22portlet%22%5D%5Bid%5D%3Ahover%20%3E%20div%5Bid%5D%3Afirst-child%3Aafter%2C%5Cndiv%5Bclass*%3D%22sv-custom-module%22%5D%5Bid%5D%3Ahover%20%3E%20div%5Bid%5D%3Afirst-child%3Aafter%20%7B%5Cn%20%20background%3A%20rgba(0%2C%200%2C%200%2C%200.6)%3B%5Cn%20%20color%3A%20%23fff%3B%5Cn%20%20content%3A%20attr(id)%3B%5Cn%20%20display%3A%20block%3B%5Cn%20%20font-size%3A%2015px%3B%5Cn%20%20left%3A%200%3B%5Cn%20%20line-height%3A%201%3B%5Cn%20%20padding%3A%200.3em%3B%5Cn%20%20position%3A%20absolute%3B%5Cn%20%20top%3A%200%3B%5Cn%7D%5Cn%5Cn%2F*%20PORTLET%20BACKGROUNDS%20*%2F%5Cn%2F*%20Standard%20portlets%20*%2F%5Cn.sv-text-portlet%2C%5Cn.sv-image-portlet%20%7B%5Cn%20%20outline-color%3A%20rgba(0%2C%20255%2C%200%2C%200.4)%20!important%3B%5Cn%7D%5Cn.sv-text-portlet%3Aafter%2C%5Cn.sv-image-portlet%3Aafter%20%7B%5Cn%20%20background%3A%20green%20!important%3B%5Cn%7D%5Cn%5Cn%2F*%20Integration%20portlets%20*%2F%5Cn.sv-script-portlet%2C%5Cn.sv-html-portlet%2C%5Cn.sv-iframe-portlet%20%7B%5Cn%20%20outline-color%3A%20rgba(255%2C%200%2C%200%2C%200.4)%20!important%3B%5Cn%7D%5Cn.sv-script-portlet%3Aafter%2C%5Cn.sv-html-portlet%3Aafter%2C%5Cn.sv-iframe-portlet%3Aafter%20%7B%5Cn%20%20background%3A%20%23f00%20!important%3B%5Cn%7D%5Cn%5Cn%2F*%20Templating%20portlets%20*%2F%5Cn.sv-jcrmenu-portlet%2C%5Cn.sv-searchform-portlet%2C%5Cn.sv-multilevellink-portlet%2C%5Cn.sv-related-portlet%20%7B%5Cn%20%20outline-color%3A%20rgba(150%2C%20150%2C%200%2C%200.4)%20!important%3B%5Cn%7D%5Cn.sv-jcrmenu-portlet%3Aafter%2C%5Cn.sv-searchform-portlet%3Aafter%2C%5Cn.sv-multilevellink-portlet%3Aafter%2C%5Cn.sv-related-portlet%3Aafter%20%7B%5Cn%20%20background%3A%20rgb(150%2C%20150%2C%200)%20!important%3B%5Cn%7D%5Cn%5Cn%2F*%20Interactive%20portlets%20*%2F%5Cn.sv-form-portlet%2C%5Cn.sv-simplesubscription-portlet%20%7B%5Cn%20%20outline-color%3A%20rgba(0%2C%20150%2C%20150%2C%200.4)%20!important%3B%5Cn%7D%5Cn.sv-form-portlet%3Aafter%2C%5Cn.sv-simplesubscription-portlet%3Aafter%20%7B%5Cn%20%20background%3A%20rgb(0%2C%20150%2C%20150)%20!important%3B%5Cn%7D%5Cn%5Cn%2F*%20Social%20media%20portlets%20*%2F%5Cn.sv-twittersearch-portlet%20%7B%5Cn%20%20outline-color%3A%20rgba(255%2C%200%2C%20254%2C%200.4)%20!important%3B%5Cn%7D%5Cn.sv-twittersearch-portlet%3Aafter%20%7B%5Cn%20%20background%3A%20%23ff00fe%20!important%3B%5Cn%7D%5Cn%5Cn%2F*%20Misc%20portlets%20*%2F%5Cn.sv-archive-portlet%2C%5Cn.sv-eventcalendar-portlet%20%7B%5Cn%20%20outline-color%3A%20rgba(0%2C%200%2C%20255%2C%200.4)%20!important%3B%5Cn%7D%5Cn.sv-archive-portlet%3Aafter%2C%5Cn.sv-eventcalendar-portlet%3Aafter%20%7B%5Cn%20%20background%3A%20blue%20!important%3B%5Cn%7D%5Cn%5Cn%2F*%20PORTLET%20LABELS%20*%2F%5Cn.sv-text-portlet%3Aafter%20%7B%5Cn%20%20content%3A%20%22Text%22%20!important%3B%5Cn%7D%5Cn.sv-image-portlet%3Aafter%20%7B%5Cn%20%20content%3A%20%22Image%22%20!important%3B%5Cn%7D%5Cn.sv-script-portlet%3Aafter%20%7B%5Cn%20%20content%3A%20%22Script%22%20!important%3B%5Cn%7D%5Cn.sv-html-portlet%3Aafter%20%7B%5Cn%20%20content%3A%20%22HTML%22%20!important%3B%5Cn%7D%5Cn.sv-iframe-portlet%3Aafter%20%7B%5Cn%20%20content%3A%20%22Iframe%22%20!important%3B%5Cn%7D%5Cn.sv-archive-portlet%3Aafter%20%7B%5Cn%20%20content%3A%20%22News%22%20!important%3B%5Cn%7D%5Cn.sv-jcrmenu-portlet%3Aafter%20%7B%5Cn%20%20content%3A%20%22Menu%22%20!important%3B%5Cn%7D%5Cn.sv-form-portlet%3Aafter%20%7B%5Cn%20%20content%3A%20%22Email%20form%22%20!important%3B%5Cn%7D%5Cn.sv-searchform-portlet%3Aafter%20%7B%5Cn%20%20content%3A%20%22Search%20field%22%20!important%3B%5Cn%7D%5Cn.sv-multilevellink-portlet%3Aafter%20%7B%5Cn%20%20content%3A%20%22Multi-level%20link%22%20!important%3B%5Cn%7D%5Cn.sv-related-portlet%3Aafter%20%7B%5Cn%20%20content%3A%20%22Related%20information%22%20!important%3B%5Cn%7D%5Cn.sv-simplesubscription-portlet%3Aafter%20%7B%5Cn%20%20content%3A%20%22Subscribe%22%20!important%3B%5Cn%7D%5Cn.sv-twittersearch-portlet%3Aafter%20%7B%5Cn%20%20content%3A%20%22Twitter%20search%22%20!important%3B%5Cn%7D%5Cn.sv-eventcalendar-portlet%3Aafter%20%7B%5Cn%20%20content%3A%20%22Event%20calendar%22%20!important%3B%5Cn%7D%5Cn%3C%2Fstyle%3E%60)%7D)(document)%7D()%3B" aria-label="Bookmark for Portlet outliner">
+          <span class="icon">
+            <span class="mdi mdi-bookmark" aria-hidden="true"></span>
+          </span>
+          <span>Portlet outliner</span>
+        </a>
+      </div>
+    </li><li class="column is-one-third">
+      <div class="box">
+        <h3 class="is-size-4 mb-2"><a href="/sitevision-profiling/">Sitevision profiling</a></h3><p class="mb-4">Easily toggle the profiling of rendered Sitevision modules.</p><a class="button is-link is-medium is-fullwidth" href="javascript:!function()%7B%22use%20strict%22%3B((t%2Ce)%3D%3E%7Bconst%20n%3Dnew%20URL(t).searchParams%2Cr%3Dfunction(t)%7Bif(t.has(%22profiling%22))return%22true%22%3D%3D%3Dt.get(%22profiling%22).toLowerCase()%3Breturn%5B...e.getElementsByTagName(%22table%22)%5D.filter((t%3D%3E-1!%3D%3Dt.textContent.search(%2FProfiling%20results%2Fi))).length%3E0%7D(n)%3Bn.set(%22profiling%22%2Cr%3F%22false%22%3A%22true%22)%2Ct.search%3D%22%3F%22%2Bn.toString()%7D)(location%2Cdocument)%7D()%3B" aria-label="Bookmark for Sitevision profiling">
+          <span class="icon">
+            <span class="mdi mdi-bookmark" aria-hidden="true"></span>
+          </span>
+          <span>Sitevision profiling</span>
+        </a>
+      </div>
+    </li></ul>
+</section>
+
+
+      </main><!--! .page-main -->
+
+      <footer class="page-footer section has-background-secondary-dark has-text-white py-5">
+        <div class="container">
+          <p class="has-text-centered">
+            <a class="page-footer__link has-text-white" href="https://github.com/hampusn/bookmarklets#readme">
+              <strong>bookmarklets</strong>
+              <span class="icon" aria-label="External link"><span aria-hidden="true" class="mdi mdi-open-in-new"></span></span>
+            </a>
+            is created by
+            <a class="page-footer__link has-text-white" href="https://hampus.io/">
+              <strong>Hampus Nordin</strong>
+              <span class="icon" aria-label="External link"><span aria-hidden="true" class="mdi mdi-open-in-new"></span></span>
+            </a>
+          </p>
+        </div>
+      </footer><!--! .page-footer -->
+    </div><!--! .page -->
+
+
+    <div id="bookmarklet-drag" class="bookmarklet-drag"></div>
+    <script src="/assets/js/main.js"></script>
+    <!-- Current page: / -->
+  </body>
+</html>
