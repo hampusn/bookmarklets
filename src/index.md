@@ -1,6 +1,7 @@
 ---
 layout: wide-page.njk
 title: Home of bookmarklets
+description: A collection of bookmarklets. Mostly related to the CMS Sitevision.
 bodyClass: page-home
 ---
 
