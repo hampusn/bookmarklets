@@ -8,8 +8,8 @@ bodyClass: page-home
 <section class="front-hero hero is-light is-halfheight">
   <div class="front-hero__body hero-body py-2">
     <hgroup class="front-hero__column front-hero__column--text is-flex-grow-1 mr-6">
-      <h1 class="title is-family-secondary">A collection of bookmarklets</h1>
-      <p class="subtitle mb-3">Mostly related to Sitevision</p>
+      <h1 class="title is-family-secondary has-text-centered-mobile">A collection of bookmarklets</h1>
+      <p class="subtitle mb-3 has-text-centered-mobile">Mostly related to Sitevision</p>
       <p>This site was built to host various bookmarklets and simplify the development of them. Most of the bookmarklets will probably be related to Sitevision, which is the system I primarily work with.</p>
     </hgroup>
     <div class="front-hero__column front-hero__column--graphic is-flex-grow-1">

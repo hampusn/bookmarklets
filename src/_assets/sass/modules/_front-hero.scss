@@ -2,12 +2,18 @@
 
 .front-hero__body {
   justify-content: center;
+
+  @include mixins.mobile {
+    flex-direction: column-reverse;
+    padding-bottom: 2rem !important;
+  }
 }
 
 .front-hero__column {
   max-width: 30rem;
 
   @include mixins.mobile {
+    margin-right: 0 !important;
     max-width: initial;
   }
 }
