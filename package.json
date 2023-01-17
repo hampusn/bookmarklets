@@ -40,5 +40,9 @@
     "rollup-plugin-string": "^3.0.0",
     "sass": "^1.57.1",
     "terser": "^5.16.1"
+  },
+  "engines": {
+    "node": "18",
+    "npm": "8"
   }
 }
