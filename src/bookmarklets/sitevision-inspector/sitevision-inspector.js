@@ -1,17 +1,36 @@
 import envisionDialog from './envision-dialog';
 import sitevisionApi from './sitevision-api';
 
-((window, document, envision) => {
-    const DIALOG_ID = 'headless-context-dialog';
+((window, document) => {
     const { pageId } = window.sv?.PageContext || {};
+    const modalDialog = envisionDialog({
+      dialogId: 'sitevision-inspector-dialog',
+      views: [
+        {
+          text: 'Properties',
+          callback () {
 
-    // Remove dialog if already in DOM
-    const dialog = document.getElementById(DIALOG_ID);
-    if (dialog) {
-      dialog.parentNode.removeChild(dialog);
-    }
-  
+          }
+        },
+        {
+          text: 'Nodes',
+          callback () {
+
+          }
+        },
+        {
+          text: 'Headless',
+          callback () {
+
+          }
+        },
+      ],
+    });
+
+    modalDialog.show();
+
     // Main code. Fetch from Rest API and output as envision modal dialog.
+    /*
     const run = async (nodeId) => {
       try {
         const response = await sitevisionApi({ nodeId, apiMethod: 'headless', origin: window.location.origin });
@@ -39,20 +58,6 @@ import sitevisionApi from './sitevision-api';
           console.error({ result, ...debugObj });
           throw `No results found.`;
         }
-
-        // Build dialog markup.
-        const dialogHTML = envisionDialog({
-          dialogId: DIALOG_ID,
-          title: (properties.articleName || properties.displayName),
-          content:`<pre><code>${JSON.stringify(result, null, 2)}</code></pre>`,
-          buttons: '<button type="button" data-modal-dialog-dismiss class="env-button">Close</button>',
-        });
-  
-        // Insert dialog into end of body and show dialog with envision.
-        document.body.insertAdjacentHTML('beforeend', dialogHTML);
-        envision.dialog('#' + DIALOG_ID).then(function (dialogs) {
-          dialogs[0].show();
-        });
       } catch (e) {
         // Log and show a toast message with error.
         console.error(e);
@@ -67,5 +72,6 @@ import sitevisionApi from './sitevision-api';
   
     // Run logic.
     run(pageId);
-  })(window, document, envision)
+    */
+  })(window, document)
   

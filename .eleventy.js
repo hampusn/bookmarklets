@@ -17,7 +17,7 @@ module.exports = function (eleventyConfig) {
     jsTruthy: true
   });
   eleventyConfig.setServerPassthroughCopyBehavior('copy'); // Eleventy fails on fonts copy when not used.
-  eleventyConfig.addWatchTarget('./src/**/*');
+  eleventyConfig.addWatchTarget('./src/bookmarklets/**/*');
   eleventyConfig.addPassthroughCopy({
     'node_modules/@mdi/font/fonts': 'assets/fonts',
     './src/_assets/fonts': 'assets/fonts',
