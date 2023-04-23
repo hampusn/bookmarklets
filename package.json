@@ -15,6 +15,7 @@
     "build:assets": "npm-run-all assets:*",
     "build:eleventy": "npx @11ty/eleventy",
     "build": "NODE_ENV=production npm-run-all clean build:*",
+    "postbuild": "cp ./CNAME ./dist",
     "watch:css": "npm run assets:css -- --watch",
     "watch:js": "npm run assets:js -- --watch",
     "watch:eleventy": "npx @11ty/eleventy --serve",
