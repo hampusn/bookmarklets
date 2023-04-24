@@ -1,77 +1,80 @@
-import envisionDialog from './envision-dialog';
+import dialog from './dialog';
 import sitevisionApi from './sitevision-api';
 
+const TYPE_PAGE = 'sv:page';
+const TYPE_FOLDER = 'sv:folder';
+
 ((window, document) => {
-    const { pageId } = window.sv?.PageContext || {};
-    const modalDialog = envisionDialog({
+    const { pageId: nodeId } = window.sv?.PageContext || {};
+    const modalDialog = dialog({
       dialogId: 'sitevision-inspector-dialog',
       views: [
         {
           text: 'Properties',
-          callback () {
+          async callback () {
+            const response = await sitevisionApi({ nodeId, apiMethod: 'properties' });
+            const data = await response.json();
 
+            const html = (
+              `<table class="env-table env-table--zebra env-table--small">
+                <caption class="env-assistive-text">Properties for ${data.articleName || data.displayName}</caption>
+                <thead>
+                  <tr><th>Property</th><th>Value</th></tr>
+                </thead>
+                <tbody>
+                  ${Object.entries(data).map(([ key, value ]) =>
+                    `<tr><td style="white-space:nowrap">${key}</td><td>${value}</td></tr>`
+                    ).join('')}
+                </tbody>
+              </table>`
+            );
+
+            return { html };
           }
         },
         {
           text: 'Nodes',
-          callback () {
+          async callback () {
+            const options = {
+              includes: [ TYPE_PAGE, TYPE_FOLDER ],
+              properties: [ "URI" ]
+            };
+            const response = await sitevisionApi({ nodeId, apiMethod: 'nodes', options });
+            const data = await response.json();
 
+            const html = (
+              `<ul class="env-nav env-nav--sidenav">
+                ${data.map(item =>
+                  `<li class="env-nav__item">
+                    ${item.type === TYPE_PAGE ?
+                      `<a class="env-nav__link" href="${item.properties.URI}">${item.name}</a>`
+                    :
+                      `<span class="env-nav__link">${item.name}</span>`
+                    }
+                  </li>`
+                ).join('')}
+              </ul>`
+            );
+
+            return { html };
           }
         },
         {
           text: 'Headless',
-          callback () {
+          async callback () {
+            const response = await sitevisionApi({ nodeId, apiMethod: 'headless' });
+            const data = await response.json();
 
+            const html = (
+              `<pre style="background-color:var(--env-ui-color-brand-10);color:var(--env-ui-color-brand-10-contrast);overflow:scroll;padding:1em;"><code>${JSON.stringify(data, null, 2)}</code></pre>`
+            );
+
+            return { html };
           }
         },
       ],
     });
 
-    modalDialog.show();
-
-    // Main code. Fetch from Rest API and output as envision modal dialog.
-    /*
-    const run = async (nodeId) => {
-      try {
-        const response = await sitevisionApi({ nodeId, apiMethod: 'headless', origin: window.location.origin });
-        const debugObj = {
-          nodeId,
-          status: response.status,
-          statusText: response.statusText,
-          _response: response
-        };
-  
-        // Someting went wrong. Throw error.
-        if (!response.ok) {
-          console.error(debugObj);
-          if (response.status === 401) {
-            throw `Missing authentication. Are you logged in?`;
-          }
-          throw `Something went wrong. Status ${response.status}`;
-        }
-  
-        const result = await response.json();
-        const properties = result?.properties;
-
-        // Empty result. Throw error.
-        if (!properties?.['jcr:uuid']) {
-          console.error({ result, ...debugObj });
-          throw `No results found.`;
-        }
-      } catch (e) {
-        // Log and show a toast message with error.
-        console.error(e);
-        document.dispatchEvent(new CustomEvent('sv-publish-toast', {
-          detail: {
-            heading: 'Error!',
-            message: String(e),
-          }
-        }));
-      }
-    }
-  
-    // Run logic.
-    run(pageId);
-    */
+    modalDialog.toggle();
   })(window, document)
   
