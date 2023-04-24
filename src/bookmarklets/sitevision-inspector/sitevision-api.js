@@ -1,3 +1,6 @@
+export const OFFLINE = 0;
+export const ONLINE = 1;
+
 /**
  * Performs a fetch request to the Sitevision Rest API.
  * 
@@ -24,6 +27,3 @@ export default async function sitevisionApi ({ nodeId, version = ONLINE, apiMeth
   
   return response;
 }
-
-export const OFFLINE = 0;
-export const ONLINE = 1;
