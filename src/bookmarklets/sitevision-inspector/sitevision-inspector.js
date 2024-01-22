@@ -16,7 +16,7 @@ const TYPE_FOLDER = 'sv:folder';
             const data = await response.json();
 
             const html = (
-              `<table class="env-table env-table--zebra env-table--small">
+              `<table class="env-table env-table--zebra env-table--small env-w--100">
                 <caption class="env-assistive-text">Properties for ${data.articleName || data.displayName}</caption>
                 <thead>
                   <tr><th>Property</th><th>Value</th></tr>
