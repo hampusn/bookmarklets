@@ -1,80 +1,86 @@
-import dialog from './dialog';
+import { Dialog, DialogView } from './Dialog';
+import Formatters from './Formatters';
+import NodeTypes from './NodeTypes';
 import sitevisionApi from './sitevision-api';
 
-const TYPE_PAGE = 'sv:page';
-const TYPE_FOLDER = 'sv:folder';
+((window) => {
+  const { pageId: nodeId } = window.sv?.PageContext || {};
+  new Dialog({
+    dialogId: 'sitevision-inspector-dialog',
+    views: [
+      new DialogView('Properties')
+        .onFetchData(async function () {
+          const response = await sitevisionApi({ nodeId, apiMethod: 'properties' });
+          const data = await response.json();
+  
+          return data;
+        })
+        .formatter(new Formatters.TableFormatter()),
+      
+      new DialogView('Nodes', {
+        breadcrumbs: [],
+        async fetchNodes (id) {
+          const options = {
+            includes: [ NodeTypes.PAGE, NodeTypes.FOLDER, NodeTypes.ARCHIVE, NodeTypes.ARTICLE ],
+            properties: [ "URI" ]
+          };
+          const response = await sitevisionApi({ nodeId: id, apiMethod: 'nodes', options });
+          const data = await response.json();
+  
+          return data;
+        }
+      })
+        .onFetchData(async function () {
+          return await this.config.fetchNodes(nodeId);
+        })
+        .formatter(new Formatters.ListFormatter({ emptyText: 'No nodes found' }))
+        .onAttach(async function (dialog) {
+          const breadcrumbs = this.config.breadcrumbs = [ nodeId ];
+          this.onClick = async (event) => {
+            const target = event.target;
+            if (/^button$/i.test(target.tagName)) {
+              let id = target.dataset.nodeId;
 
-((window, document) => {
-    const { pageId: nodeId } = window.sv?.PageContext || {};
-    const modalDialog = dialog({
-      dialogId: 'sitevision-inspector-dialog',
-      views: [
-        {
-          text: 'Properties',
-          async callback () {
-            const response = await sitevisionApi({ nodeId, apiMethod: 'properties' });
-            const data = await response.json();
+              if (id === 'back') {
+                breadcrumbs.pop();
+              } else {
+                breadcrumbs.push(id);
+              }
+              
+              id = breadcrumbs[breadcrumbs.length - 1];
 
-            const html = (
-              `<table class="env-table env-table--zebra env-table--small env-w--100">
-                <caption class="env-assistive-text">Properties for ${data.articleName || data.displayName}</caption>
-                <thead>
-                  <tr><th>Property</th><th>Value</th></tr>
-                </thead>
-                <tbody>
-                  ${Object.entries(data).map(([ key, value ]) =>
-                    `<tr><td style="white-space:nowrap">${key}</td><td>${value}</td></tr>`
-                    ).join('')}
-                </tbody>
-              </table>`
-            );
+              const data = await this.config.fetchNodes(id);
+              
+              if (id !== nodeId) {
+                data.unshift({
+                  type: 'back',
+                  id: 'back',
+                  name: 'Go back',
+                });
+              }
 
-            return { html };
-          }
-        },
-        {
-          text: 'Nodes',
-          async callback () {
-            const options = {
-              includes: [ TYPE_PAGE, TYPE_FOLDER ],
-              properties: [ "URI" ]
-            };
-            const response = await sitevisionApi({ nodeId, apiMethod: 'nodes', options });
-            const data = await response.json();
+              this.setData(data);
+              dialog.render();
+            }
+          };
 
-            const html = (
-              `<ul class="env-nav env-nav--sidenav">
-                ${data.map(item =>
-                  `<li class="env-nav__item">
-                    ${item.type === TYPE_PAGE ?
-                      `<a class="env-nav__link" href="${item.properties.URI}">${item.name}</a>`
-                    :
-                      `<span class="env-nav__link">${item.name}</span>`
-                    }
-                  </li>`
-                ).join('')}
-              </ul>`
-            );
+          dialog.el(dialog.cid).addEventListener('click', this.onClick);
+        })
+        .onDetach(async function (dialog) {
+          dialog.el(dialog.cid).removeEventListener('click', this.onClick);
+        }),
 
-            return { html };
-          }
-        },
-        {
-          text: 'Headless',
-          async callback () {
-            const response = await sitevisionApi({ nodeId, apiMethod: 'headless' });
-            const data = await response.json();
+      new DialogView('Headless')
+        .onFetchData(async function () {
+          const response = await sitevisionApi({ nodeId, apiMethod: 'headless' });
+          const data = await response.json();
 
-            const html = (
-              `<pre style="background-color:var(--env-ui-color-brand-10);color:var(--env-ui-color-brand-10-contrast);overflow:scroll;padding:1em;"><code>${JSON.stringify(data, null, 2)}</code></pre>`
-            );
-
-            return { html };
-          }
-        },
-      ],
-    });
-
-    modalDialog.toggle();
-  })(window, document)
+          return data;
+        })
+        .formatter(new Formatters.JsonFormatter()),
+    ],
+  })
+    .init()
+    .toggle();
+})(window)
   
