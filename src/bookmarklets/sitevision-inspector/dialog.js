@@ -1,7 +1,9 @@
 import { Formatter } from './Formatters';
+import Events from './Events';
 
 const CLASS_BASE = 'env-modal-dialog';
 const ACTIVE_CLASS = 'env-button--primary';
+const SPINNER_CLASS = 'env-spinner-bounce';
 const DOCUMENT = window.document;
 const ENVISION = window.envision;
 
@@ -20,11 +22,16 @@ export class Dialog {
     this.views = views;
     this.current = 0;
     this.isLoading = false;
+    this.version = 1;
   
-    this.tid = dialogId + '-t';
-    this.cid = dialogId + '-c';
-    this.bid = dialogId + '-b';
-    this.bgid = dialogId + '-bg';
+    this.tid = dialogId + '-t'; // title
+    this.cid = dialogId + '-c'; // content
+    this.bid = dialogId + '-b'; // button id prefix
+    this.bgid = dialogId + '-bg'; // button group
+    this.fid = dialogId + '-f'; // footer
+    this.lid = dialogId + '-l'; // loader
+
+    this.views.forEach((view) => view.setDialog(this));
   }
 
   el (id) {
@@ -45,7 +52,12 @@ export class Dialog {
       <div class="${CLASS_BASE}__dialog ${CLASS_BASE}__dialog--large">
         <section class="${CLASS_BASE}__content">
           <header class="${CLASS_BASE}__header">
-            <h5 id="${titleId}" class="env-text ${CLASS_BASE}__header__title">Sitevision inspector</h5>
+            <h5 id="${titleId}" class="env-text env-d--flex env-flex--align-items-center env-flex--justify-content-between ${CLASS_BASE}__header__title">
+              Sitevision inspector
+              <div id="${this.lid}" class="${SPINNER_CLASS} ${SPINNER_CLASS}--hide ${SPINNER_CLASS}--fade-in" data-delay="medium">
+                ${[1,2,3].map(i => `<div class="env-bounce${i}"></div>`).join('')}
+              </div>
+            </h5>
             <div id="${this.bgid}" class="env-button-group env-m-top--small">
               ${this.views.map((view, i) => `<button id="${this.bid + i}" type="button" class="env-button env-flex__item--grow-1" data-view-index="${i}">${view.name}</button>`).join('')}
             </div>
@@ -53,15 +65,22 @@ export class Dialog {
           <div class="${CLASS_BASE}__body">
             <div id="${this.cid}">View properties, nodes and headless data with the buttons above.</div>
           </div>
-          <footer class="${CLASS_BASE}__footer ${CLASS_BASE}__footer--right"><button type="button" data-modal-dialog-dismiss class="env-button">Close</button></footer>
+          <footer id="${this.fid}" class="${CLASS_BASE}__footer env-d--flex env-flex--justify-content-between">
+            <fieldset class="env-form-element__control env-d--flex env-flex--align-items-center" style="gap: var(--env-spacing-medium);">
+              <legend class="env-form-element__label env-m-bottom--0" style="float: left; font-weight: 700;">Version:</legend>
+              <label class="env-radio env-m-bottom--0"><input type="radio" name="version" value="1" checked>Online (Public)</label>
+              <label class="env-radio env-m-bottom--0"><input type="radio" name="version" value="0">Offline (Edit)</label>
+            </fieldset>
+            <button type="button" data-modal-dialog-dismiss class="env-button">Close</button>
+          </footer>
         </section>
       </div>
     </div>`
     ));
 
-    this.el(this.bgid).addEventListener('click', async (event) => {
+    const buttonsCallback = async (event) => {
       if (!this.isLoading && /^button$/i.test(event.target.tagName)) {
-        this.isLoading = true;
+        this.setLoading(true);
         this.el(this.bid + this.current).classList.remove(ACTIVE_CLASS);
         await this.detach();
         this.current = parseInt(event.target.dataset.viewIndex, 10);
@@ -69,8 +88,17 @@ export class Dialog {
         this.render();
         await this.attach();
         this.el(this.bid + this.current).classList.add(ACTIVE_CLASS);
-        this.isLoading = false;
+        this.setLoading(false);
       }
+    };
+
+    Events.onClick(this.el(this.bgid), buttonsCallback);
+    Events.onChange(this.el(this.fid), async (event) => {
+      this.version = parseInt(event.target.value, 10);
+
+      buttonsCallback({
+        target: this.el(this.bid + this.current)
+      });
     });
   
     return this;
@@ -82,31 +110,37 @@ export class Dialog {
 
   async attach () {
     const view = this.views[this.current];
-    await view.attach.call(view, this);
+    await view.attach.call(view);
   }
   async detach () {
     const view = this.views[this.current];
-    await view.detach.call(view, this);
+    await view.detach.call(view);
+  }
+
+  setLoading (isLoading) {
+    this.isLoading = !!isLoading;
+    this.el(this.lid).classList[this.isLoading ? 'remove' : 'add'](`${SPINNER_CLASS}--hide`);
   }
 
   async fetch () {
     const view = this.views[this.current];
-    await view.fetchData.call(view, this);
+    const data = await view.fetchData.call(view);
+    view.setData(data);
   }
 
   render () {
     const view = this.views[this.current];
-    this.updateContent(view.render.call(view, this));
-  }
+    const renderedView = view.render.call(view);
 
-  show (cb) {
-    ENVISION.dialog('#' + this.id, 'show').then(cb);
-    return this;  
+    if (renderedView) {
+      this.updateContent(renderedView);
+    }
   }
-
-  hide (cb) {
-    ENVISION.dialog('#' + this.id, 'hide').then(cb);
-    return this;  
+  
+  renderError (errorMessage) {
+    this.updateContent(
+      `<div class="env-alert env-alert--danger">${errorMessage}</div>`
+    );
   }
 
   toggle (cb) {
@@ -118,6 +152,7 @@ export class Dialog {
 export class DialogView {
   constructor (name, config = {}) {
     this.name = name;
+    this.dialog = null;
     this._formatter = null;
     this._fetch = null;
     this._attach = null;
@@ -126,30 +161,41 @@ export class DialogView {
     this.config = config;
   }
 
+  setDialog (dialog) {
+    this.dialog = dialog;
+    return this;
+  }
+
   setData (data) {
     this._data = data;
   }
 
-  async fetchData () {
-    if (typeof this._fetch === 'function') {
-      this.setData(await this._fetch.call(this));
+  async fetchData (...args) {    
+    try {
+      if (typeof this._fetch === 'function') {
+        return await this._fetch.call(this, ...args);
+      }
+    } catch (e) {
+      this.dialog.renderError(String(e));      
     }
+
+    return false;
   }
 
-  async attach (dialog) {
+  async attach () {
     if (typeof this._attach === 'function') {
-      await this._attach.call(this, dialog);
+      await this._attach.call(this);
     }
   }
 
-  async detach (dialog) {
+  async detach () {
     if (typeof this._detach === 'function') {
-      await this._detach.call(this, dialog);
+      await this._detach.call(this);
     }
   }
 
   render () {
-    if (this._formatter instanceof Formatter) {
+    if (this._formatter instanceof Formatter && this._data) {
       return this._formatter.setData(this._data).render();
     }
 

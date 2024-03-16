@@ -1,6 +1,17 @@
 import NodeTypes from './NodeTypes';
 import Icons from './Icons';
 
+const ICONS_DICT = {
+  [NodeTypes.ARCHIVE]: Icons.ARCHIVE,
+  [NodeTypes.FOLDER]: Icons.FOLDER,
+  [NodeTypes.PAGE]: Icons.PAGE,
+  [NodeTypes.ARTICLE]: Icons.ARTICLE,
+  [NodeTypes.LINK]: Icons.LINK,
+  [NodeTypes.GROUP_PAGE]: Icons.GROUP_PAGE,
+  [NodeTypes.GROUP_FOLDER]: Icons.GROUP_FOLDER,
+  'back': Icons.BACK,
+};
+
 export class Formatter {
   constructor (opts = {}) {
     this.emptyText = 'No data found',
@@ -77,15 +88,7 @@ export class TableFormatter extends Formatter {
 
 export class ListFormatter extends Formatter {
   icon (type) {
-    const dict = {
-      [NodeTypes.ARCHIVE]: Icons.ARCHIVE,
-      [NodeTypes.FOLDER]: Icons.FOLDER,
-      [NodeTypes.PAGE]: Icons.PAGE,
-      [NodeTypes.ARTICLE]: Icons.ARTICLE,
-      'back': Icons.BACK,
-    };
-
-    return dict[type] ? String(dict[type]).replace('<svg ', '<svg class="env-icon env-icon--small env-m-right--small" ') : '';
+    return ICONS_DICT[type] ? String(ICONS_DICT[type]).replace('<svg ', '<svg class="env-icon env-icon--small env-m-right--small" ') : '';
   }
 
   render () {
@@ -101,9 +104,10 @@ export class ListFormatter extends Formatter {
       `<ul class="env-nav env-nav--sidenav">
         ${data.map(item =>
           `<li class="env-nav__item">
-            ${[NodeTypes.PAGE, NodeTypes.ARTICLE].includes(item.type) ?
+            ${[NodeTypes.PAGE, NodeTypes.ARTICLE, NodeTypes.LINK, NodeTypes.GROUP_PAGE].includes(item.type) ?
               `<a class="env-nav__link env-d--flex" href="${s(item.properties.URI)}">${i(item.type)}${s(item.name)}</a>`
             :
+              // Envision does not have utility class for justify-content: start;
               `<button class="env-nav__link env-button env-button--link env-d--flex env-w--100" style="justify-content: start;" data-node-id="${s(item.id)}">${i(item.type)}${s(item.name)}</button>`
             }
           </li>`

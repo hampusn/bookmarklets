@@ -2,46 +2,43 @@ import { Dialog, DialogView } from './Dialog';
 import Formatters from './Formatters';
 import NodeTypes from './NodeTypes';
 import sitevisionApi from './sitevision-api';
+import Events from './Events';
 
 ((window) => {
   const { pageId: nodeId } = window.sv?.PageContext || {};
   new Dialog({
     dialogId: 'sitevision-inspector-dialog',
     views: [
+      // Properties view
       new DialogView('Properties')
         .onFetchData(async function () {
-          const response = await sitevisionApi({ nodeId, apiMethod: 'properties' });
-          const data = await response.json();
-  
-          return data;
+          return await sitevisionApi({ nodeId, version: this.dialog.version, apiMethod: 'properties' });
         })
         .formatter(new Formatters.TableFormatter()),
       
+      // Nodes view
       new DialogView('Nodes', {
         breadcrumbs: [],
-        async fetchNodes (id) {
-          const options = {
-            includes: [ NodeTypes.PAGE, NodeTypes.FOLDER, NodeTypes.ARCHIVE, NodeTypes.ARTICLE ],
-            properties: [ "URI" ]
-          };
-          const response = await sitevisionApi({ nodeId: id, apiMethod: 'nodes', options });
-          const data = await response.json();
-  
-          return data;
-        }
       })
-        .onFetchData(async function () {
-          return await this.config.fetchNodes(nodeId);
+        .onFetchData(async function (id = nodeId) {
+          const options = {
+            includes: Object.values(NodeTypes),
+            properties: [ 'URI' ]
+          };
+          return await sitevisionApi({ nodeId: id, version: this.dialog.version, apiMethod: 'nodes', options });
         })
         .formatter(new Formatters.ListFormatter({ emptyText: 'No nodes found' }))
-        .onAttach(async function (dialog) {
+        .onAttach(async function () {
+          const dialog = this.dialog;
           const breadcrumbs = this.config.breadcrumbs = [ nodeId ];
+
           this.onClick = async (event) => {
             const target = event.target;
-            if (/^button$/i.test(target.tagName)) {
+            const BACK = 'back';
+            if (!this.isLoading && /^button$/i.test(target.tagName)) {
               let id = target.dataset.nodeId;
 
-              if (id === 'back') {
+              if (id === BACK) {
                 breadcrumbs.pop();
               } else {
                 breadcrumbs.push(id);
@@ -49,33 +46,34 @@ import sitevisionApi from './sitevision-api';
               
               id = breadcrumbs[breadcrumbs.length - 1];
 
-              const data = await this.config.fetchNodes(id);
+              dialog.setLoading(true);
+              const data = await this.fetchData(id);
               
               if (id !== nodeId) {
                 data.unshift({
-                  type: 'back',
-                  id: 'back',
+                  type: BACK,
+                  id: BACK,
                   name: 'Go back',
                 });
               }
 
               this.setData(data);
               dialog.render();
+              dialog.setLoading(false);
             }
           };
 
-          dialog.el(dialog.cid).addEventListener('click', this.onClick);
+          Events.onClick(dialog.el(dialog.cid), this.onClick);
         })
-        .onDetach(async function (dialog) {
-          dialog.el(dialog.cid).removeEventListener('click', this.onClick);
+        .onDetach(async function () {
+          const dialog = this.dialog;
+          Events.offClick(dialog.el(dialog.cid), this.onClick);
         }),
 
+      // Headless view
       new DialogView('Headless')
         .onFetchData(async function () {
-          const response = await sitevisionApi({ nodeId, apiMethod: 'headless' });
-          const data = await response.json();
-
-          return data;
+          return await sitevisionApi({ nodeId, version: this.dialog.version, apiMethod: 'headless' });
         })
         .formatter(new Formatters.JsonFormatter()),
     ],
@@ -83,4 +81,3 @@ import sitevisionApi from './sitevision-api';
     .init()
     .toggle();
 })(window)
-  

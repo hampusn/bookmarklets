@@ -23,7 +23,24 @@ export default async function sitevisionApi ({ nodeId, version = ONLINE, apiMeth
 
   const v = [OFFLINE, ONLINE].includes(version) ? version : ONLINE;
   const url = `${origin}/rest-api/1/${v}/${nodeId}/${apiMethod}?format=json&json=${apiParams}`;
+
+  if (v === OFFLINE) {
+    fetchOpts.credentials = 'same-origin';
+  }
+
   const response = await fetch(url, fetchOpts);
-  
-  return response;
+  let data = {};
+  try {
+    data = await response.json();
+  } catch (_) {}
+
+  if (!response.ok) {
+    throw [
+      `Status ${response.status}`,
+      data?.description,
+      data?.message,
+    ].filter(v => !!v).join(', ');
+  }
+
+  return data;
 }
