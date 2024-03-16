@@ -9,7 +9,6 @@ module.exports = async function bookmarklets (configData) {
   const items = [];
 
   console.log('Generating bookmarklets');
-  console.log('=======================');
 
   const contentDir = path.join(configData.eleventy.env.root, './src/bookmarklets');
   const directories = (await fs.readdir(contentDir, { withFileTypes: true }))
