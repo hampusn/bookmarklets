@@ -6,6 +6,13 @@ import Events from './Events';
 
 ((window) => {
   const { pageId: nodeId } = window.sv?.PageContext || {};
+
+  // Bail early if envision is not found.
+  if (!window.envision) {
+    console.warn('Envision not found. Exiting since most likely not Sitevision.');
+    return;
+  }
+
   new Dialog({
     dialogId: 'sitevision-inspector-dialog',
     views: [
