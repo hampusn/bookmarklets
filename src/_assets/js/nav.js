@@ -1,19 +1,21 @@
+const ACTIVE_CLASS = 'is-active';
+const MENU_TOGGLER_SELECTOR = '.navbar-burger';
+
 document.addEventListener('DOMContentLoaded', () => {
-  // Get all "navbar-burger" elements
-  const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+  // Get all "navbar-burger"/toggler elements
+  const togglerList = document.querySelectorAll(MENU_TOGGLER_SELECTOR);
 
   // Add a click event on each of them
-  $navbarBurgers.forEach( el => {
-    el.addEventListener('click', () => {
-
+  togglerList.forEach((toggler) => {
+    toggler.addEventListener('click', () => {
       // Get the target from the "data-target" attribute
-      const target = el.dataset.target;
-      const $target = document.getElementById(target);
+      const target = document.getElementById(toggler.dataset.target);
 
-      // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
-      el.classList.toggle('is-active');
-      $target.classList.toggle('is-active');
-
+      if (target) {
+        // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+        toggler.classList.toggle(ACTIVE_CLASS);
+        target.classList.toggle(ACTIVE_CLASS);
+      }
     });
   });
 });

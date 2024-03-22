@@ -1,4 +1,5 @@
 import confetti from 'canvas-confetti';
+import { getBookmarkElement, isBookmarkElement } from './utils';
 
 const CONFETTI_BOOKMARK_SHAPE = confetti.shapeFromPath({
   path: 'M17.016 3q0.797 0 1.383 0.609t0.586 1.406v15.984l-6.984-3-6.984 3v-15.984q0-0.797 0.586-1.406t1.383-0.609h10.031z'
@@ -9,14 +10,6 @@ const BOOKMARKLET_DRAG_CLASS = 'bookmarklet-drag--active';
 const BOOKMARKLET_BUTTON_DRAGING_CLASS = 'bookmarklet-button--draging';
 const BOOKMARKLET_BUTTON_ERROR_CLASS = 'bookmarklet-button--error';
 const BOOKMARKLET_BUTTON_SUCCESS_CLASS = 'bookmarklet-button--success';
-const isBookmarkElement = (element) => element?.nodeName === 'A' && element.href.startsWith('javascript');
-const getBookmarkElement = (element) => {
-  if (isBookmarkElement(element)) {
-    return element;
-  }
-
-  return element.closest('a[href^="javascript"]');
-};
 
 window.addEventListener('click', (event) => {
   const { target } = event;
