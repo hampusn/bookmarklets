@@ -1,6 +1,0 @@
-((document) => {
-  
-
-
-  console.log()
-})(document)
