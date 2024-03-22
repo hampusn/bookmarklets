@@ -32,9 +32,11 @@ bodyClass: page-home
         {%- if post.data.description -%}
           <p class="mb-4">{{ post.data.description }}</p>
         {%- endif -%}
-        <a class="button is-link is-medium is-fullwidth" href="{{ post.data.bookmarkUrl | url }}" aria-label="Bookmark for {{ post.data.title }}">
+        <a class="bookmarklet-button button is-link is-medium is-fullwidth" href="{{ post.data.bookmarkUrl | url }}" aria-label="Bookmark for {{ post.data.title }}">
           <span class="icon">
-            <span class="mdi mdi-bookmark" aria-hidden="true"></span>
+            <span class="bookmarklet__icon bookmarklet__icon mdi mdi-bookmark" aria-hidden="true"></span>
+            <span class="bookmarklet__icon bookmarklet__icon--error mdi mdi-block-helper" aria-hidden="true"></span>
+            <span class="bookmarklet__icon bookmarklet__icon--success mdi mdi-check-bold" aria-hidden="true"></span>
           </span>
           <span>{{ post.data.title }}</span>
         </a>

@@ -1,0 +1,49 @@
+@import "../globals/variables";
+
+.bookmarklet-drag {
+  background: rgba(10,10,10,.86);
+  bottom: 0;
+  display: block;
+  height: 100vh;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: fixed;
+  transition: opacity 0.2s ease;
+  right: 0;
+  top: 0;
+  z-index: 100;
+  width: 100vw;
+}
+
+.bookmarklet-drag--active {
+  opacity: 1;
+}
+
+
+.bookmarklet-button {
+  transition: all 0.1s ease;
+}
+
+.bookmarklet-button--draging {
+  z-index: 101;
+}
+
+.bookmarklet-button:not(.bookmarklet-button--error) .bookmarklet__icon--error,
+.bookmarklet-button:not(.bookmarklet-button--success) .bookmarklet__icon--success,
+.bookmarklet-button--error .bookmarklet__icon:not(.bookmarklet__icon--error),
+.bookmarklet-button--success .bookmarklet__icon:not(.bookmarklet__icon--success) {
+  display: none;
+}
+
+.bookmarklet-button--error {
+  animation: horizontal-shaking 400ms linear 1 both;
+  background-color: $error-color !important;
+  color: $error-invert-color !important;
+}
+
+.bookmarklet-button--success {
+	animation: pulsate-bck 0.5s ease-in-out 4 both;
+  background-color: $success-color !important;
+  color: $success-invert-color !important;
+}

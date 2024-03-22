@@ -33,9 +33,11 @@ layout: base.njk
 
     <div class="has-text-centered-desktop my-6">
       <p class="is-size-5 mb-2">Drag this link to your bookmarks to save it.</p>
-      <a class="button is-link is-medium" href="{{ bookmarkUrl | url }}">
+      <a class="bookmarklet-button button is-link is-medium" href="{{ bookmarkUrl | url }}">
         <span class="icon">
-          <span class="mdi mdi-bookmark" aria-hidden="true"></span>
+          <span class="bookmarklet__icon bookmarklet__icon mdi mdi-bookmark" aria-hidden="true"></span>
+          <span class="bookmarklet__icon bookmarklet__icon--error mdi mdi-block-helper" aria-hidden="true"></span>
+          <span class="bookmarklet__icon bookmarklet__icon--success mdi mdi-check-bold" aria-hidden="true"></span>
         </span>
         <span>{{ title }}</span>
       </a>

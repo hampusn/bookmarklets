@@ -1,9 +1,10 @@
+@use 'globals/a11y';
 @use 'globals/animations';
 @use 'globals/fonts';
 @use 'globals/bulma';
 @use 'globals/base';
 @use 'layout/page-footer';
-@use 'modules/bookmarklet-drag';
+@use 'modules/bookmarklet';
 @use 'modules/front-hero';
 @use 'modules/navigation';
 
