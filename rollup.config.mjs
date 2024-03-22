@@ -2,8 +2,12 @@ import { nodeResolve } from "@rollup/plugin-node-resolve";
 import terser from "@rollup/plugin-terser";
 
 export default {
+  input: './src/_assets/js/main.js',
   output: {
-    format: 'iife',
+    dir: './dist/assets/js',
+    format: 'es',
+    preserveModules: true,
+    preserveModulesRoot: 'src/_assets/js',
   },
 	plugins: [
 		nodeResolve(),

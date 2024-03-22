@@ -10,7 +10,7 @@
   },
   "scripts": {
     "assets:css": "sass --load-path=./node_modules ./src/_assets/sass/main.scss ./dist/assets/css/main.css",
-    "assets:js": "rollup ./src/_assets/js/main.js --file ./dist/assets/js/main.js --config rollup.config.mjs",
+    "assets:js": "rollup --config rollup.config.mjs",
     "clean": "rm -rf ./dist",
     "build:assets": "npm-run-all assets:*",
     "build:eleventy": "npx @11ty/eleventy",
