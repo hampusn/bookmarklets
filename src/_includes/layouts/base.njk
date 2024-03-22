@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title or metadata.title }}</title>
     <meta name="description" content="{{ description or metadata.description }}">
-    <link rel="stylesheet" href="{{ '/assets/css/main.css' | url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/main.css' | url }}?v={{ pkg.version }}">
   </head>
   <body class="{{ layout | templateBodyClass }} {{ bodyClass }}">
     <div class="page is-flex is-flex-direction-column">
@@ -76,9 +76,8 @@
       </footer><!--! .page-footer -->
     </div><!--! .page -->
 
-
     <div id="bookmarklet-drag" class="bookmarklet-drag"></div>
-    <script src="{{ '/assets/js/main.js' | url }}"></script>
+    <script src="{{ '/assets/js/main.js' | url }}?v={{ pkg.version }}"></script>
     <!-- Current page: {{ page.url | url }} -->
   </body>
 </html>
