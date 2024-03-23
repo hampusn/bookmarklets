@@ -14,8 +14,8 @@ bodyClass: page-home
     </hgroup>
     <div class="front-hero__column front-hero__column--graphic is-flex-grow-1">
       <div class="front-hero__graphic">
-        <span aria-hidden="true" class="front-hero__graphic__bookmark icon"><span class="mdi mdi-bookmark-outline"></span></span>
-        <span aria-hidden="true" class="front-hero__graphic__cog icon"><span class="mdi mdi-cog"></span></span>
+        <svg class="front-hero__graphic__bookmark icon" aria-hidden="true"><use href="{{ '/assets/img/icons.svg#mdi-bookmark-outline' | url }}"></use></svg>
+        <svg class="front-hero__graphic__cog icon" aria-hidden="true"><use href="{{ '/assets/img/icons.svg#mdi-cog' | url }}"></use></svg>
       </div>
     </div>
   </div>
@@ -33,11 +33,9 @@ bodyClass: page-home
           <p class="mb-4">{{ post.data.description }}</p>
         {%- endif -%}
         <a class="bookmarklet-button button is-link is-medium is-fullwidth" href="{{ post.data.bookmarkUrl | url }}" aria-label="Bookmark for {{ post.data.title }}">
-          <span class="icon">
-            <span class="bookmarklet__icon bookmarklet__icon mdi mdi-bookmark" aria-hidden="true"></span>
-            <span class="bookmarklet__icon bookmarklet__icon--error mdi mdi-block-helper" aria-hidden="true"></span>
-            <span class="bookmarklet__icon bookmarklet__icon--success mdi mdi-check-bold" aria-hidden="true"></span>
-          </span>
+          <svg class="bookmarklet__icon bookmarklet__icon icon" aria-hidden="true"><use href="{{ '/assets/img/icons.svg#mdi-bookmark' | url }}"></use></svg>
+          <svg class="bookmarklet__icon bookmarklet__icon--error icon" aria-hidden="true"><use href="{{ '/assets/img/icons.svg#mdi-block-helper' | url }}"></use></svg>
+          <svg class="bookmarklet__icon bookmarklet__icon--success icon" aria-hidden="true"><use href="{{ '/assets/img/icons.svg#mdi-check-bold' | url }}"></use></svg>
           <span>{{ post.data.title }}</span>
         </a>
       </div>

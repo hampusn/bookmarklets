@@ -1,12 +1,36 @@
 @import "variables";
 
 // Import Bulma
-@import "bulma/bulma.sass";
-
+@import "bulma/sass/utilities/_all.sass";
+@import "bulma/sass/base/_all.sass";
+@import "bulma/sass/elements/box.sass";
+@import "bulma/sass/elements/button.sass";
+@import "bulma/sass/elements/container.sass";
+@import "bulma/sass/elements/content.sass";
+@import "bulma/sass/elements/title.sass";
+@import "bulma/sass/components/navbar.sass";
+@import "bulma/sass/grid/columns.sass";
+@import "bulma/sass/helpers/_all.sass";
+@import "bulma/sass/layout/_all.sass";
 
 // Bulma fixes and overrides
 .token.number, .token.tag {
   all: inherit;
+}
+
+.button .icon {
+  height: 1em;
+  width: 1em;
+}
+
+/**
+ * This override will be problematic if I choose to move the icon to after the text.
+ * A rewrite will be needed then.
+ */
+.button .icon:first-child:not(:last-child),
+.button .icon {
+  margin-left: -0.2em;
+  margin-right: 0.4em;
 }
 
 code {

@@ -11,6 +11,7 @@
   "scripts": {
     "assets:css": "sass --load-path=./node_modules ./src/_assets/sass/main.scss ./dist/assets/css/main.css",
     "assets:js": "rollup --config rollup.config.mjs",
+    "assets:icons": "node .scripts/build-icons-sprite.js",
     "clean": "rm -rf ./dist",
     "build:assets": "npm-run-all assets:*",
     "build:eleventy": "npx @11ty/eleventy",
@@ -30,7 +31,7 @@
   "devDependencies": {
     "@11ty/eleventy": "^2.0.1",
     "@11ty/eleventy-plugin-syntaxhighlight": "^4.2.0",
-    "@mdi/font": "^7.4.47",
+    "@mdi/svg": "^7.4.47",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.3.0",
     "bulma": "^0.9.4",
@@ -42,6 +43,7 @@
     "rollup": "^3.29.4",
     "rollup-plugin-string": "^3.0.0",
     "sass": "^1.72.0",
+    "svgson": "^5.3.1",
     "terser": "^5.29.2"
   },
   "engines": {

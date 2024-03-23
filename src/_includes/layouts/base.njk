@@ -13,9 +13,7 @@
         <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
           <div class="navbar-brand">
             <a class="home-item navbar-item" href="{{ '/' | url }}">
-              <span class="home-item__icon icon is-large">
-                <span class="mdi mdi-bookmark-multiple" aria-hidden="true"></span>
-              </span>
+              <svg class="home-item__icon icon" aria-hidden="true"><use href="{{ '/assets/img/icons.svg#mdi-bookmark-multiple' | url }}"></use></svg>
               <span class="home-item__text is-family-secondary pr-4">{{ metadata.title }}</span>
             </a>
 
@@ -31,9 +29,7 @@
               <div class="navbar-item">
                 <div class="buttons">
                   <a class="button is-secondary" href="https://github.com/hampusn/bookmarklets#readme">
-                    <span class="icon">
-                      <span class="mdi mdi-github" aria-hidden="true"></span>
-                    </span>
+                    <svg class="icon" aria-hidden="true"><use href="{{ '/assets/img/icons.svg#mdi-github' | url }}"></use></svg>
                     <strong>Github</strong>
                   </a>
                 </div>
@@ -64,12 +60,12 @@
           <p class="has-text-centered">
             <a class="page-footer__link has-text-white" href="https://github.com/hampusn/bookmarklets#readme">
               <strong>bookmarklets</strong>
-              <span class="icon" aria-label="External link"><span aria-hidden="true" class="mdi mdi-open-in-new"></span></span>
+              <svg class="icon" aria-label="External link"><use href="{{ '/assets/img/icons.svg#mdi-open-in-new' | url }}"></use></svg>
             </a>
             is created by
             <a class="page-footer__link has-text-white" href="{{ pkg.author.url | url }}">
               <strong>{{ pkg.author.name }}</strong>
-              <span class="icon" aria-label="External link"><span aria-hidden="true" class="mdi mdi-open-in-new"></span></span>
+              <svg class="icon" aria-label="External link"><use href="{{ '/assets/img/icons.svg#mdi-open-in-new' | url }}"></use></svg>
             </a>
           </p>
         </div>
