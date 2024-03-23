@@ -24,10 +24,10 @@ bodyClass: page-home
 <section class="section">
   <h2 class="is-size-2 is-family-secondary has-text-white">Bookmarklets</h2>
 
-  <ul class="columns is-multiline my-4">
+  <ul class="front-bookmarklets columns is-multiline my-4">
     {%- for post in collections.bookmarklets -%}
-    <li class="column is-one-third">
-      <div class="box">
+    <li class="column is-flex is-one-third-widescreen is-half-tablet">
+      <div class="box is-flex is-flex-direction-column">
         <h3 class="is-size-4 mb-2"><a href="{{ post.url | url }}">{{ post.data.title }}</a></h3>
         {%- if post.data.description -%}
           <p class="mb-4">{{ post.data.description }}</p>
