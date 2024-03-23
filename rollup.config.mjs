@@ -11,6 +11,6 @@ export default {
   },
 	plugins: [
 		nodeResolve(),
-		...(process.env.ELEVENTY_ENV === "production" ? [terser()] : []),
+		...(process.env.NODE_ENV === "production" ? [terser()] : []),
 	],
 };
