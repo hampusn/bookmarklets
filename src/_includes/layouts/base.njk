@@ -6,6 +6,7 @@
     <title>{{ title or metadata.title }}</title>
     <meta name="description" content="{{ description or metadata.description }}">
     <link rel="stylesheet" href="{{ '/assets/css/main.css' | url }}?v={{ pkg.version }}">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
   </head>
   <body class="{{ layout | templateBodyClass }} {{ bodyClass }}">
     <div class="page is-flex is-flex-direction-column">
