@@ -107,8 +107,9 @@ export class ListFormatter extends Formatter {
             ${[NodeTypes.PAGE, NodeTypes.ARTICLE, NodeTypes.LINK, NodeTypes.GROUP_PAGE].includes(item.type) ?
               `<a class="env-nav__link env-d--flex" href="${s(item.properties.URI)}">${i(item.type)}${s(item.name)}</a>`
             :
-              // Envision does not have utility class for justify-content: start;
-              `<button class="env-nav__link env-button env-button--link env-d--flex env-w--100" style="justify-content: start;" data-node-id="${s(item.id)}">${i(item.type)}${s(item.name)}</button>`
+              // Envision does not yet have utility class for justify-content: start;
+              // env-d--flex does not override display of env-button in older SV versions so we need to inline display flex.
+              `<button class="env-nav__link env-button env-button--link env-w--100" style="justify-content: start; display: flex;" data-node-id="${s(item.id)}">${i(item.type)}${s(item.name)}</button>`
             }
           </li>`
         ).join('')}
