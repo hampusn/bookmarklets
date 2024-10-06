@@ -1,11 +1,12 @@
 import { Dialog, DialogView } from './Dialog';
 import Formatters from './Formatters';
 import NodeTypes from './NodeTypes';
-import sitevisionApi from './sitevision-api';
-import Events from './Events';
+import sitevisionApi from '../../_lib/shared/sitevision-api';
+import Events from '../../_lib/shared/Events';
 
 ((window) => {
   const { pageId: nodeId } = window.sv?.PageContext || {};
+
 
   // Bail early if envision is not found.
   if (!window.envision) {

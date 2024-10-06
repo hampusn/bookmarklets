@@ -1,5 +1,5 @@
 import { Formatter } from './Formatters';
-import Events from './Events';
+import Events from '../../_lib/shared/Events';
 
 const CLASS_BASE = 'env-modal-dialog';
 const ACTIVE_CLASS = 'env-button--primary';
