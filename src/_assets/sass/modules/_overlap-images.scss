@@ -1,0 +1,28 @@
+@use 'bulma/sass/utilities/mixins';
+
+.overlap-images {
+  padding-bottom: 10%;
+  position: relative;
+  /* transform: translateX(-3.5%); */
+
+  @include mixins.mobile {
+    padding-bottom: 25%;
+  }
+
+  img {
+    max-width: 400px;
+    width: 80%;
+  }
+
+  img:last-child {
+    left: 0;
+    position: absolute;
+    right: 0;
+    transform: translate(60%, 20%);
+    z-index: -1;
+
+    @include mixins.mobile {
+      transform: translate(20%, 40%);
+    }
+  }
+}
