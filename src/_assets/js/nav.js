@@ -15,6 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
         toggler.classList.toggle(ACTIVE_CLASS);
         target.classList.toggle(ACTIVE_CLASS);
+
+        toggler.setAttribute('aria-expanded', toggler.classList.contains(ACTIVE_CLASS));
+        target.setAttribute('aria-hidden', !target.classList.contains(ACTIVE_CLASS));
       }
     });
   });
