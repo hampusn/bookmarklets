@@ -1,4 +1,4 @@
-const glob = require('glob');
+const { globSync } = require('glob');
 const fs = require('fs');
 
 module.exports = function (eleventyConfig) {
@@ -22,20 +22,21 @@ module.exports = function (eleventyConfig) {
     'node_modules/@mdi/font/fonts': 'assets/fonts',
     './src/_assets/fonts': 'assets/fonts',
   });
+
   // eleventyConfig.addPassthroughCopy does not support changing target path
   // so I had to write custom copy with glob below.
-  glob(`./${config.dir.input}/bookmarklets/**/*.{gif,png,jpg,webp}`, (err, files) => {
-    for (const file of files) {
-      const target = file.replace(`${config.dir.input}/bookmarklets`, config.dir.output);
-      fs.cp(file, target, (err) => {
-        if (err) {
-          console.error(`Could not copy bookmarklet asset: ${file}`, err);
-        } else {
-          console.log(`Copied bookmarklet asset: ${file}`);
-        }
-      });
-    }
-  });
+  const files = globSync(`./${config.dir.input}/bookmarklets/**/*.{gif,png,jpg,webp}`);
+
+  for (const file of files) {
+    const target = file.replace(`${config.dir.input}/bookmarklets`, config.dir.output);
+    fs.cp(file, target, (err) => {
+      if (err) {
+        console.error(`Could not copy bookmarklet asset: ${file}`, err);
+      } else {
+        console.log(`Copied bookmarklet asset: ${file}`);
+      }
+    });
+  }
 
   require('./.eleventy/collections')(eleventyConfig);
   require('./.eleventy/filters')(eleventyConfig);

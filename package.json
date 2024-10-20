@@ -20,7 +20,7 @@
     "watch:css": "npm run assets:css -- --watch --style expanded",
     "watch:js": "npm run assets:js -- --watch",
     "watch:eleventy": "npx @11ty/eleventy --serve",
-    "dev": "NODE_ENV=development npm-run-all --parallel watch:*"
+    "dev": "NODE_ENV=development npm-run-all --parallel watch:* assets:icons"
   },
   "author": {
     "name": "Hampus Nordin",
