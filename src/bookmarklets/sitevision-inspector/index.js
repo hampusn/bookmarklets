@@ -22,6 +22,9 @@ import Events from '../../_lib/shared/Events';
         .onFetchData(async function () {
           return await sitevisionApi({ nodeId, version: this.dialog.version, apiMethod: 'properties' });
         })
+        .onBuildIndex(function (data) {
+          return [ ...Object.entries(data) ].map(([ property, value ]) => property + ' ' + value);
+        })
         .formatter(new Formatters.TableFormatter()),
       
       // Nodes view
@@ -34,6 +37,9 @@ import Events from '../../_lib/shared/Events';
             properties: [ 'URI' ]
           };
           return await sitevisionApi({ nodeId: id, version: this.dialog.version, apiMethod: 'nodes', options });
+        })
+        .onBuildIndex(function (data) {
+          return data.map(node => node.name);
         })
         .formatter(new Formatters.ListFormatter({ emptyText: 'No nodes found' }))
         .onAttach(async function () {
