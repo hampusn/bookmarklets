@@ -78,7 +78,7 @@ export class TableFormatter extends Formatter {
       </thead>
       <tbody>
         ${Object.entries(data).map(([ key, value ]) =>
-          `<tr><td style="white-space:nowrap">${s(key)}</td><td>${s(value)}</td></tr>`
+          `<tr data-filter-item><td style="white-space:nowrap">${s(key)}</td><td>${s(value)}</td></tr>`
         ).join('')}
       </tbody>
     </table>`
@@ -103,7 +103,7 @@ export class ListFormatter extends Formatter {
     return (
       `<ul class="env-nav env-nav--sidenav">
         ${data.map(item =>
-          `<li class="env-nav__item">
+          `<li class="env-nav__item" data-filter-item>
             ${[NodeTypes.PAGE, NodeTypes.ARTICLE, NodeTypes.LINK, NodeTypes.GROUP_PAGE].includes(item.type) ?
               `<a class="env-nav__link env-d--flex" href="${s(item.properties.URI)}">${i(item.type)}${s(item.name)}</a>`
             :
