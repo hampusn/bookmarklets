@@ -30,6 +30,8 @@ export class Dialog {
     this.bgid = dialogId + '-bg'; // button group
     this.fid = dialogId + '-f'; // footer
     this.lid = dialogId + '-l'; // loader
+    this.sfid = dialogId + '-sf'; // Search filter
+    this.siid = dialogId + '-si'; // Search input
 
     this.views.forEach((view) => view.setDialog(this));
   }
@@ -41,6 +43,7 @@ export class Dialog {
   init () {
     const dialogId = this.id;
     const titleId = this.tid;
+    const searchInputId = this.siid;
   
     if (this.el(dialogId)) {
       return this;
@@ -63,6 +66,13 @@ export class Dialog {
             </div>
           </header>
           <div class="${CLASS_BASE}__body">
+            <div id="${this.sfid}" class="env-form-element">
+              <label for="${searchInputId}" class="env-form-element__label">Filter query</label>
+              <div class="env-form-element__control">
+                <input type="search" class="env-form-input env-form-input--search" id="${searchInputId}" />
+              </div>
+            </div>
+
             <div id="${this.cid}">View properties, nodes and headless data with the buttons above.</div>
           </div>
           <footer id="${this.fid}" class="${CLASS_BASE}__footer env-d--flex env-flex--justify-content-between">
@@ -92,7 +102,21 @@ export class Dialog {
       }
     };
 
+    const filterInputCallback = (event) => {
+      this.applyFilter(event.target.value);
+    };
+
+    const filterKeydownCallback = (event) => {
+      // Prevent Escape from hiding modal if clearing filter input by escape key.
+      // When the filter input is empty, act as normal.
+      if (event.key === 'Escape' && !!event.target.value) {
+        event.stopImmediatePropagation();
+      }
+    };
+
     Events.onClick(this.el(this.bgid), buttonsCallback);
+    Events.onInput(this.el(this.siid), filterInputCallback);
+    Events.onKeydown(this.el(this.siid), filterKeydownCallback);
     Events.onChange(this.el(this.fid), async (event) => {
       this.version = parseInt(event.target.value, 10);
 
@@ -128,12 +152,25 @@ export class Dialog {
     view.setData(data);
   }
 
+  applyFilter (searchQuery) {
+    const view = this.views[this.current];
+    const index = view.getIndex();
+
+    const query = (searchQuery ?? this.el(this.siid).value).toLowerCase();
+
+    this.el(this.cid).querySelectorAll('[data-filter-item]').forEach((el, i) => {
+      el.hidden = !!query && !index[i].includes(query);
+    });
+  }
+
   render () {
     const view = this.views[this.current];
     const renderedView = view.render.call(view);
 
     if (renderedView) {
       this.updateContent(renderedView);
+      this.applyFilter();
+      this.el(this.sfid).style.display = view.getIndex() ? '' : 'none';
     }
   }
   
@@ -157,7 +194,9 @@ export class DialogView {
     this._fetch = null;
     this._attach = null;
     this._detach = null;
+    this._onUpdateIndex = null;
     this._data = null;
+    this._index = null;
     this.config = config;
   }
 
@@ -168,6 +207,17 @@ export class DialogView {
 
   setData (data) {
     this._data = data;
+    this.buildIndex(data);
+  }
+
+  getIndex () {
+    return this._index;
+  }
+
+  buildIndex (data) {
+    if (typeof this._buildIndex === 'function') {
+      this._index = this._buildIndex.call(this, data).map(s => s.toLowerCase());
+    }
   }
 
   async fetchData (...args) {    
@@ -183,14 +233,22 @@ export class DialogView {
   }
 
   async attach () {
-    if (typeof this._attach === 'function') {
-      await this._attach.call(this);
+    try {
+      if (typeof this._attach === 'function') {
+        await this._attach.call(this);
+      }
+    } catch (e) {
+      this.dialog.renderError(String(e));
     }
   }
 
   async detach () {
-    if (typeof this._detach === 'function') {
-      await this._detach.call(this);
+    try {
+      if (typeof this._detach === 'function') {
+        await this._detach.call(this);
+      }
+    } catch (e) {
+      this.dialog.renderError(String(e));
     }
   }
 
@@ -207,6 +265,11 @@ export class DialogView {
     return this;
   }
 
+  onBuildIndex (cb) {
+    this._buildIndex = cb;
+    return this;
+  }
+
   onFetchData (cb) {
     this._fetch = cb;
     return this;
@@ -216,6 +279,7 @@ export class DialogView {
     this._attach = cb;
     return this;
   }
+
   onDetach (cb) {
     this._detach = cb;
     return this;

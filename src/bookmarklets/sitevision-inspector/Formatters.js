@@ -14,7 +14,9 @@ const ICONS_DICT = {
 
 export class Formatter {
   constructor (opts = {}) {
-    this.emptyText = 'No data found',
+    this.emptyText = 'No data found';
+    this.caption = '';
+    this.headings = ['Property', 'Value'];
     this.data = null;
 
     this.applyOpts(opts);
@@ -23,6 +25,14 @@ export class Formatter {
   applyOpts (opts) {
     if (opts.emptyText) {
       this.emptyText = opts.emptyText;
+    }
+
+    if (opts.caption) {
+      this.caption = opts.caption;
+    }
+
+    if (opts.headings) {
+      this.headings = opts.headings;
     }
   }
 
@@ -69,16 +79,20 @@ export class TableFormatter extends Formatter {
     if (!dataStr || dataStr === '{}') {
       return this.emptyText;
     }
+    
+    const rows = Array.isArray(data) ? data : Object.entries(data);
+    const caption = typeof this.caption === 'function' ? this.caption.call(null, data) : this.caption;
+    const [ keyHeading, valueHeading ] = this.headings;
 
     return (
     `<table class="env-table env-table--zebra env-table--small env-w--100">
-      <caption class="env-assistive-text">Properties for ${s(data.articleName || data.displayName)}</caption>
+      <caption class="env-assistive-text">${s(caption)}</caption>
       <thead>
-        <tr><th>Property</th><th>Value</th></tr>
+        <tr><th>${keyHeading}</th><th>${valueHeading}</th></tr>
       </thead>
       <tbody>
-        ${Object.entries(data).map(([ key, value ]) =>
-          `<tr><td style="white-space:nowrap">${s(key)}</td><td>${s(value)}</td></tr>`
+        ${rows.map(([ key, value ]) =>
+          `<tr data-filter-item><td style="white-space:nowrap">${s(key)}</td><td>${s(value)}</td></tr>`
         ).join('')}
       </tbody>
     </table>`
@@ -103,7 +117,7 @@ export class ListFormatter extends Formatter {
     return (
       `<ul class="env-nav env-nav--sidenav">
         ${data.map(item =>
-          `<li class="env-nav__item">
+          `<li class="env-nav__item" data-filter-item>
             ${[NodeTypes.PAGE, NodeTypes.ARTICLE, NodeTypes.LINK, NodeTypes.GROUP_PAGE].includes(item.type) ?
               `<a class="env-nav__link env-d--flex" href="${s(item.properties.URI)}">${i(item.type)}${s(item.name)}</a>`
             :
