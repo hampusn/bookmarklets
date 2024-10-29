@@ -16,6 +16,7 @@ export class Formatter {
   constructor (opts = {}) {
     this.emptyText = 'No data found';
     this.caption = '';
+    this.headings = ['Property', 'Value'];
     this.data = null;
 
     this.applyOpts(opts);
@@ -28,6 +29,10 @@ export class Formatter {
 
     if (opts.caption) {
       this.caption = opts.caption;
+    }
+
+    if (opts.headings) {
+      this.headings = opts.headings;
     }
   }
 
@@ -77,12 +82,13 @@ export class TableFormatter extends Formatter {
     
     const rows = Array.isArray(data) ? data : Object.entries(data);
     const caption = typeof this.caption === 'function' ? this.caption.call(null, data) : this.caption;
+    const [ keyHeading, valueHeading ] = this.headings;
 
     return (
     `<table class="env-table env-table--zebra env-table--small env-w--100">
       <caption class="env-assistive-text">${s(caption)}</caption>
       <thead>
-        <tr><th>Property</th><th>Value</th></tr>
+        <tr><th>${keyHeading}</th><th>${valueHeading}</th></tr>
       </thead>
       <tbody>
         ${rows.map(([ key, value ]) =>

@@ -129,7 +129,7 @@ import Events from '../../_lib/shared/Events';
         .onBuildIndex(function (data) {
           return data.map(([ property, value ]) => property + ' ' + value);
         })
-        .formatter(new Formatters.TableFormatter()),
+        .formatter(new Formatters.TableFormatter({ headings: [ 'Field', 'Value' ] })),
     ],
   })
     .init()
