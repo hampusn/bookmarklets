@@ -14,7 +14,8 @@ const ICONS_DICT = {
 
 export class Formatter {
   constructor (opts = {}) {
-    this.emptyText = 'No data found',
+    this.emptyText = 'No data found';
+    this.caption = '';
     this.data = null;
 
     this.applyOpts(opts);
@@ -23,6 +24,10 @@ export class Formatter {
   applyOpts (opts) {
     if (opts.emptyText) {
       this.emptyText = opts.emptyText;
+    }
+
+    if (opts.caption) {
+      this.caption = opts.caption;
     }
   }
 
@@ -69,15 +74,18 @@ export class TableFormatter extends Formatter {
     if (!dataStr || dataStr === '{}') {
       return this.emptyText;
     }
+    
+    const rows = Array.isArray(data) ? data : Object.entries(data);
+    const caption = typeof this.caption === 'function' ? this.caption.call(null, data) : this.caption;
 
     return (
     `<table class="env-table env-table--zebra env-table--small env-w--100">
-      <caption class="env-assistive-text">Properties for ${s(data.articleName || data.displayName)}</caption>
+      <caption class="env-assistive-text">${s(caption)}</caption>
       <thead>
         <tr><th>Property</th><th>Value</th></tr>
       </thead>
       <tbody>
-        ${Object.entries(data).map(([ key, value ]) =>
+        ${rows.map(([ key, value ]) =>
           `<tr data-filter-item><td style="white-space:nowrap">${s(key)}</td><td>${s(value)}</td></tr>`
         ).join('')}
       </tbody>
