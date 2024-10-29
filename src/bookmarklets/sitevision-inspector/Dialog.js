@@ -224,14 +224,22 @@ export class DialogView {
   }
 
   async attach () {
-    if (typeof this._attach === 'function') {
-      await this._attach.call(this);
+    try {
+      if (typeof this._attach === 'function') {
+        await this._attach.call(this);
+      }
+    } catch (e) {
+      this.dialog.renderError(String(e));
     }
   }
 
   async detach () {
-    if (typeof this._detach === 'function') {
-      await this._detach.call(this);
+    try {
+      if (typeof this._detach === 'function') {
+        await this._detach.call(this);
+      }
+    } catch (e) {
+      this.dialog.renderError(String(e));
     }
   }
 
