@@ -106,8 +106,17 @@ export class Dialog {
       this.applyFilter(event.target.value);
     };
 
+    const filterKeydownCallback = (event) => {
+      // Prevent Escape from hiding modal if clearing filter input by escape key.
+      // When the filter input is empty, act as normal.
+      if (event.key === 'Escape' && !!event.target.value) {
+        event.stopImmediatePropagation();
+      }
+    };
+
     Events.onClick(this.el(this.bgid), buttonsCallback);
     Events.onInput(this.el(this.siid), filterInputCallback);
+    Events.onKeydown(this.el(this.siid), filterKeydownCallback);
     Events.onChange(this.el(this.fid), async (event) => {
       this.version = parseInt(event.target.value, 10);
 
