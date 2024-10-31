@@ -156,6 +156,10 @@ export class Dialog {
     const view = this.views[this.current];
     const index = view.getIndex();
 
+    if (!index) {
+      return;
+    }
+
     const query = (searchQuery ?? this.el(this.siid).value).toLowerCase();
 
     this.el(this.cid).querySelectorAll('[data-filter-item]').forEach((el, i) => {
@@ -170,8 +174,9 @@ export class Dialog {
     if (renderedView) {
       this.updateContent(renderedView);
       this.applyFilter();
-      this.el(this.sfid).style.display = view.getIndex() ? '' : 'none';
     }
+
+    this.el(this.sfid).style.display = view.getIndex() ? '' : 'none';
   }
   
   renderError (errorMessage) {
@@ -216,7 +221,7 @@ export class DialogView {
 
   buildIndex (data) {
     if (typeof this._buildIndex === 'function') {
-      this._index = this._buildIndex.call(this, data).map(s => s.toLowerCase());
+      this._index = this._buildIndex.call(this, data)?.map(s => s.toLowerCase());
     }
   }
 

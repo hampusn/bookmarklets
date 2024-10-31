@@ -127,6 +127,10 @@ import Events from '../../_lib/shared/Events';
           }, []);
         })
         .onBuildIndex(function (data) {
+          if (!Array.isArray(data)) {
+            return null;
+          }
+
           return data.map(([ property, value ]) => property + ' ' + value);
         })
         .formatter(new Formatters.TableFormatter({ headings: [ 'Field', 'Value' ] })),
