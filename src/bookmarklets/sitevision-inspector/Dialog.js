@@ -163,7 +163,7 @@ export class Dialog {
     const query = (searchQuery ?? this.el(this.siid).value).toLowerCase();
 
     this.el(this.cid).querySelectorAll('[data-filter-item]').forEach((el, i) => {
-      el.hidden = !!query && !index[i].includes(query);
+      el.style.display = !!query && !index[i].includes(query) ? 'none' : '';
     });
   }
 
