@@ -1,6 +1,6 @@
 {
   "name": "bookmarklets",
-  "version": "0.8.2",
+  "version": "0.9.0",
   "description": "A site for storing my personal bookmarklets. Powered by 11ty.",
   "homepage": "https://github.com/hampusn/bookmarklets#readme",
   "bugs": "https://github.com/hampusn/bookmarklets/issues",
