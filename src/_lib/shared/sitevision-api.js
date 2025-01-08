@@ -14,7 +14,7 @@ export const ONLINE = 1;
  * @param {string} [options.origin=window.location.origin] The origin to send the request to.
  * @returns {Response}
  */
-export default async function sitevisionApi ({ nodeId, path, siteName, version = ONLINE, apiMethod = 'nodes', options = {}, origin = window.location.origin }) {
+export default async function sitevisionApi ({ nodeId, path, siteName, version = ONLINE, apiMethod = 'nodes', options = {}, origin = window.location.origin, returnError = false }) {
   if (!nodeId && !(path && siteName)) {
     throw 'Api needs either a nodeId or a path.';
   }
@@ -34,18 +34,31 @@ export default async function sitevisionApi ({ nodeId, path, siteName, version =
     fetchOpts.credentials = 'same-origin';
   }
 
-  const response = await fetch(url, fetchOpts);
+  let response;
   let data = {};
   try {
+    response = await fetch(url, fetchOpts);
     data = await response.json();
-  } catch (_) {}
+  } catch (e) {
+    response = { ok: false, status: response.status };
+    data = { message: String(e) };
+  }
 
+  let e = null;
   if (!response.ok) {
-    throw [
+    e = [
       `Status ${response.status}`,
       data?.description,
       data?.message,
     ].filter(v => !!v).join(', ');
+
+    if (!returnError) {
+      throw e;
+    }
+  }
+
+  if (returnError) {
+    return [ data, e ];
   }
 
   return data;
