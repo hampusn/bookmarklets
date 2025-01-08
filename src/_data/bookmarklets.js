@@ -23,6 +23,9 @@ const generateBookmarklet = async function generateBookmarklet (bookmarkletEntry
     input: bookmarkletEntryPath,
     plugins: [
       stringPlugin({
+        include: path.join(bookmarkletDir, '../../_lib/**/*.css'),
+      }),
+      stringPlugin({
         include: path.join(bookmarkletDir, '*'),
         exclude: [
           bookmarkletEntryPath,
