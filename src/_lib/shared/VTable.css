@@ -1,0 +1,47 @@
+.__VTable-container {
+  overflow-y: auto;
+}
+
+.__VTable-container table {
+  table-layout: fixed;
+}
+
+.__VTable-container thead {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.__VTable-container thead tr {
+  background: var(--env-section-background-color);
+}
+
+.__VTable-container thead th,
+.__VTable-container tbody td {
+  box-sizing: border-box;
+  flex: 1;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.__VTable-container thead th:first-child,
+.__VTable-container tbody td:first-child {
+  flex: initial;
+  width: 6em;
+}
+
+.__VTable-container tbody {
+  position: relative;
+}
+
+.__VTable-container tbody tr {
+  display: flex;
+  position: absolute;
+  width: 100%;
+}
+
+.__VTable-container .env-table--hover tr:hover {
+  cursor: pointer;
+}
