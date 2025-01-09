@@ -2,7 +2,8 @@ const fs = require('fs/promises');
 const path = require('path');
 const { rollup } = require('rollup');
 const terserPlugin = require('@rollup/plugin-terser');
-const { string: stringPlugin } = require('rollup-plugin-string');
+const { stringPlugin } = require('../_lib/rollup-plugin-string');
+const CleanCSS = require('clean-css');
 
 const getBookmarkletList = async function getBookmarkletList (dir) {
   const list = (await fs.readdir(dir, { withFileTypes: true }))
@@ -18,15 +19,30 @@ const createBookmarkletURI = function createBookmarkletURI (code) {
 
 const generateBookmarklet = async function generateBookmarklet (bookmarkletEntryPath) {
   const bookmarkletDir = path.dirname(bookmarkletEntryPath);
+  const cssCleaner = new CleanCSS({});
+
+  const cssCleanerTransformer = (code, id) => {
+    if (path.extname(id) === '.css') {
+      return cssCleaner.minify(code).styles;
+    }
+
+    return code;
+  };
 
   const bundle = await rollup({
     input: bookmarkletEntryPath,
     plugins: [
       stringPlugin({
         include: path.join(bookmarkletDir, '../../_lib/**/*.css'),
+        transformers: [
+          cssCleanerTransformer
+        ],
       }),
       stringPlugin({
         include: path.join(bookmarkletDir, '*'),
+        transformers: [
+          cssCleanerTransformer
+        ],
         exclude: [
           bookmarkletEntryPath,
           path.join(bookmarkletDir, 'index.md'),
