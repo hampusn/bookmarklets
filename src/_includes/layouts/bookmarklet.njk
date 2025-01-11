@@ -5,6 +5,16 @@ layout: base.njk
   <div class="container is-max-desktop">
     <div class="content">
       <h1 class="is-family-secondary">{{ title }}</h1>
+
+      {%- if replacedBy -%}
+        <div class="message is-info">
+          <div class="message-body">
+            <svg class="icon icon--large" aria-hidden="true"><use href="{{ '/assets/img/icons.svg#mdi-information-slab-circle' | url }}"></use></svg>
+            <strong>{{ title }}</strong> has been discontinued. Try <a href="{{ replacedBy.url | url }}">{{ replacedBy.title }}</a> instead.
+          </div>
+        </div>
+      {%- endif -%}
+
       {{ content | safe }}
     </div>
   </div>

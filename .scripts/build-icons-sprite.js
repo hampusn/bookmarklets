@@ -14,6 +14,7 @@ const ICONS = [
   'check-bold',
   'bookmark-outline',
   'cog',
+  'information-slab-circle',
 ];
 
 (async () => {
