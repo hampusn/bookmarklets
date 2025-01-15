@@ -24,6 +24,10 @@ import Events from '../../_lib/shared/Events';
           return await sitevisionApi({ nodeId, version: this.dialog.version, apiMethod: 'properties' });
         })
         .onBuildIndex(function (data) {
+          if (data === null || typeof data !== 'object' || Array.isArray(data) || Object.keys(data).length === 0) {
+            return null;
+          }
+
           return [ ...Object.entries(data) ].map(([ property, value ]) => property + ' ' + value);
         })
         .formatter(new Formatters.TableFormatter({ caption: (data) => `Properties for ${data.articleName || data.displayName}` })),
@@ -40,6 +44,10 @@ import Events from '../../_lib/shared/Events';
           return await sitevisionApi({ nodeId: id, version: this.dialog.version, apiMethod: 'nodes', options });
         })
         .onBuildIndex(function (data) {
+          if (!Array.isArray(data)) {
+            return null;
+          }
+
           return data.map(node => node.name);
         })
         .formatter(new Formatters.ListFormatter({ emptyText: 'No nodes found' }))

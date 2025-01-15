@@ -2,6 +2,18 @@ module.exports = {
   files: (data) => data.bookmarklets?.find(bm => bm.name === data.page.fileSlug)?.files,
   bookmarkUrl: (data) => data.bookmarklets?.find(bm => bm.name === data.page.fileSlug)?.bookmarkUrl,
   size: (data) => data.bookmarklets?.find(bm => bm.name === data.page.fileSlug)?.bookmarkUrl.length,
+  replacedBy: (data) => {
+    const ref = data.collections.bookmarklets.find(bm => bm.page.fileSlug === data.replacedBy);
+
+    if (ref) {
+      return {
+        title: ref.data.title,
+        url: ref.page.url,
+      };
+    }
+
+    return null;
+  },
   updated: (data) => data.updated || '',
   permalink(data) {
     // If the page is in `draft:true` mode, don't write it to disk...
