@@ -1,5 +1,12 @@
 .front-bookmarklets .box {
+  position: relative;
   width: 100%;
+}
+
+.front-bookmarklets__item__discontinued-tag {
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 
 .front-bookmarklets .bookmarklet-button {

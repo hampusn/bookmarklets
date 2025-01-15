@@ -4,3 +4,7 @@
     transition-duration: 1ms !important;
   }
 }
+
+[hidden][hidden] {
+  display: none !important;
+}

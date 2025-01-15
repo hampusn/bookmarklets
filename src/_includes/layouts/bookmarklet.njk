@@ -9,7 +9,7 @@ layout: base.njk
       {%- if replacedBy -%}
         <div class="message is-info">
           <div class="message-body">
-            <svg class="icon icon--large" aria-hidden="true"><use href="{{ '/assets/img/icons.svg#mdi-information-slab-circle' | url }}"></use></svg>
+            <svg class="icon icon--large" aria-hidden="true"><use href="{{ 'mdi-information-slab-circle' | iconUrl }}"></use></svg>
             <strong>{{ title }}</strong> has been discontinued. Try <a href="{{ replacedBy.url | url }}">{{ replacedBy.title }}</a> instead.
           </div>
         </div>
@@ -44,9 +44,9 @@ layout: base.njk
     <div class="has-text-centered-desktop my-6">
       <p class="is-size-5 mb-2">Drag this link to your bookmarks to save it.</p>
       <a class="bookmarklet-button button is-link is-medium" href="{{ bookmarkUrl | url }}">
-        <svg class="bookmarklet__icon bookmarklet__icon icon" aria-hidden="true"><use href="{{ '/assets/img/icons.svg#mdi-bookmark' | url }}"></use></svg>
-        <svg class="bookmarklet__icon bookmarklet__icon--error icon" aria-hidden="true"><use href="{{ '/assets/img/icons.svg#mdi-block-helper' | url }}"></use></svg>
-        <svg class="bookmarklet__icon bookmarklet__icon--success icon" aria-hidden="true"><use href="{{ '/assets/img/icons.svg#mdi-check-bold' | url }}"></use></svg>
+        <svg class="bookmarklet__icon bookmarklet__icon icon" aria-hidden="true"><use href="{{ 'mdi-bookmark' | iconUrl }}"></use></svg>
+        <svg class="bookmarklet__icon bookmarklet__icon--error icon" aria-hidden="true"><use href="{{ 'mdi-block-helper' | iconUrl }}"></use></svg>
+        <svg class="bookmarklet__icon bookmarklet__icon--success icon" aria-hidden="true"><use href="{{ 'mdi-check-bold' | iconUrl }}"></use></svg>
         <span>{{ title }}</span>
       </a>
     </div>
