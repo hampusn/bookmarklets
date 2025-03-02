@@ -1,5 +1,6 @@
 import { Formatter } from './Formatters';
 import Events from '../../_lib/shared/Events';
+import Icons from './Icons';
 
 const CLASS_BASE = 'env-modal-dialog';
 const ACTIVE_CLASS = 'env-button--primary';
@@ -17,8 +18,9 @@ const ENVISION = window.envision;
  */
 
 export class Dialog {
-  constructor ({ dialogId, views = [] }) {
+  constructor ({ dialogId, nodeId, views = [] }) {
     this.id = dialogId;
+    this.nodeId = nodeId;
     this.views = views;
     this.current = 0;
     this.isLoading = false;
@@ -26,6 +28,7 @@ export class Dialog {
   
     this.tid = dialogId + '-t'; // title
     this.cid = dialogId + '-c'; // content
+    this.ctxid = dialogId + '-ctx'; // context node id field
     this.bid = dialogId + '-b'; // button id prefix
     this.bgid = dialogId + '-bg'; // button group
     this.fid = dialogId + '-f'; // footer
@@ -61,6 +64,30 @@ export class Dialog {
                 ${[1,2,3].map(i => `<div class="env-bounce${i}"></div>`).join('')}
               </div>
             </h5>
+            <div id="${this.ctxid}" class="env-m-top--small">
+              <div class="env-form-element">
+                <div class="env-form-element__control env-form-input-group">
+                  <label for="${this.ctxid}-f" class="env-form-input-group__label" style="flex-shrink:0">ID</label>
+                  <input class="env-form-input" id="${this.ctxid}-f" readonly value="${this.nodeId}">
+                  <button data-ctx-action="edit" type="button" class="env-button env-button--primary env-button--icon">
+                    Edit context node id
+                    ${Icons.EDIT.replace('<svg', '<svg style="pointer-events:none" class="env-icon"')}
+                  </button>
+                </div>
+              </div>
+              <button data-ctx-action="save" type="button" class="env-d--none env-button env-button--success env-button--icon">
+                Change context node id
+                <svg style="pointer-events:none" class="env-icon">
+                  <use href="/sitevision/envision-icons.svg#icon-check-line"></use>
+                </svg>
+              </button>
+              <button data-ctx-action="cancel" type="button" class="env-d--none env-button env-button--ghost env-button--danger env-button--icon">
+                Cancel change
+                <svg style="pointer-events:none" class="env-icon">
+                  <use href="/sitevision/envision-icons.svg#icon-delete"></use>
+                </svg>
+              </button>
+            </div>
             <div id="${this.bgid}" class="env-button-group env-m-top--small">
               ${this.views.map((view, i) => `<button id="${this.bid + i}" type="button" class="env-button env-flex__item--grow-1" data-view-index="${i}">${view.name}</button>`).join('')}
             </div>
@@ -88,17 +115,75 @@ export class Dialog {
     </div>`
     ));
 
+    const changeView = async (viewIndex) => {
+      const currentIndex = this.current;
+      const isReload = viewIndex === currentIndex;
+
+      this.setLoading(true);
+
+      if (!isReload) {
+        this.el(this.bid + currentIndex).classList.remove(ACTIVE_CLASS);
+      }
+
+      await this.detach();
+      this.current = viewIndex;
+      await this.fetch();
+      this.render();
+      await this.attach();
+
+      if (!isReload) {
+        this.el(this.bid + this.current).classList.add(ACTIVE_CLASS);
+      }
+      
+      this.setLoading(false);
+    };
+
+    const reloadView = async () => await changeView(this.current);
+
+    const showCtxButtons = (btns) => {
+      this.el(this.ctxid).querySelector('.env-form-input-group').append(...btns);
+      btns.forEach(btn => btn.classList.remove('env-d--none'));
+    };
+
+    const hideCtxButtons = (btns) => {
+      this.el(this.ctxid).append(...btns);
+      btns.forEach(btn => btn.classList.add('env-d--none'));
+    };
+
+    const ctxButtonCallback = async (event) => {
+      if (!this.isLoading && /^button$/i.test(event.target.tagName)) {
+        const action = event.target.dataset.ctxAction;
+        const ctxContainer = this.el(this.ctxid);
+        const ctxInput = ctxContainer.querySelector('input');
+        const saveAndCancelBtns = ctxContainer.querySelectorAll('[data-ctx-action="save"], [data-ctx-action="cancel"]');
+        const editBtn = ctxContainer.querySelectorAll('[data-ctx-action="edit"]');
+
+        switch (action) {
+          case 'edit':
+            showCtxButtons(saveAndCancelBtns);
+            hideCtxButtons(editBtn);
+            ctxInput.readOnly = false;
+            break;
+          case 'save':
+            this.setNodeId(ctxInput.value);
+            hideCtxButtons(saveAndCancelBtns);
+            showCtxButtons(editBtn);
+            ctxInput.readOnly = true;
+            await reloadView();
+            break;
+          case 'cancel':
+            hideCtxButtons(saveAndCancelBtns);
+            showCtxButtons(editBtn);
+            ctxInput.value = this.nodeId;
+            ctxInput.readOnly = true;
+            break;
+        }
+      }
+    };
+
     const buttonsCallback = async (event) => {
       if (!this.isLoading && /^button$/i.test(event.target.tagName)) {
-        this.setLoading(true);
-        this.el(this.bid + this.current).classList.remove(ACTIVE_CLASS);
-        await this.detach();
-        this.current = parseInt(event.target.dataset.viewIndex, 10);
-        await this.fetch();
-        this.render();
-        await this.attach();
-        this.el(this.bid + this.current).classList.add(ACTIVE_CLASS);
-        this.setLoading(false);
+        await changeView(parseInt(event.target.dataset.viewIndex, 10));
       }
     };
 
@@ -114,18 +199,22 @@ export class Dialog {
       }
     };
 
+    Events.onClick(this.el(this.ctxid), ctxButtonCallback);
     Events.onClick(this.el(this.bgid), buttonsCallback);
     Events.onInput(this.el(this.siid), filterInputCallback);
     Events.onKeydown(this.el(this.siid), filterKeydownCallback);
     Events.onChange(this.el(this.fid), async (event) => {
       this.version = parseInt(event.target.value, 10);
 
-      buttonsCallback({
-        target: this.el(this.bid + this.current)
-      });
+      await changeView(parseInt(this.el(this.bid + this.current).dataset.viewIndex, 10));
     });
   
     return this;
+  }
+
+  setNodeId (nodeId) {
+    this.nodeId = String(nodeId).trim();
+    this.el(`${this.ctxid}-f`).value = this.nodeId;
   }
 
   updateContent (html) {

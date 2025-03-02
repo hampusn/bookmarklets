@@ -123,7 +123,7 @@ export class ListFormatter extends Formatter {
             :
               // Envision does not yet have utility class for justify-content: start;
               // env-d--flex does not override display of env-button in older SV versions so we need to inline display flex.
-              `<button class="env-nav__link env-button env-button--link env-w--100" style="justify-content: start; display: flex;" data-node-id="${s(item.id)}">${i(item.type)}${s(item.name)}</button>`
+              `<button class="env-nav__link env-button env-button--link env-w--100" style="justify-content:start;display:flex;border-radius:0;" data-node-id="${s(item.id)}">${i(item.type)}${s(item.name)}</button>`
             }
           </li>`
         ).join('')}
