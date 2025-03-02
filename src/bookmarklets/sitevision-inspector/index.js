@@ -14,14 +14,16 @@ import Events from '../../_lib/shared/Events';
   }
 
   let __siteName;
+  const BACK = 'back';
 
   new Dialog({
+    nodeId,
     dialogId: 'sitevision-inspector-dialog',
     views: [
       // Properties view
       new DialogView('Properties')
         .onFetchData(async function () {
-          return await sitevisionApi({ nodeId, version: this.dialog.version, apiMethod: 'properties' });
+          return await sitevisionApi({ nodeId: this.dialog.nodeId, version: this.dialog.version, apiMethod: 'properties' });
         })
         .onBuildIndex(function (data) {
           if (data === null || typeof data !== 'object' || Array.isArray(data) || Object.keys(data).length === 0) {
@@ -36,12 +38,25 @@ import Events from '../../_lib/shared/Events';
       new DialogView('Nodes', {
         breadcrumbs: [],
       })
-        .onFetchData(async function (id = nodeId) {
+        .onFetchData(async function (id = null) {
+          id ??= this.dialog.nodeId;
+
           const options = {
             includes: Object.values(NodeTypes),
             properties: [ 'URI' ]
           };
-          return await sitevisionApi({ nodeId: id, version: this.dialog.version, apiMethod: 'nodes', options });
+
+          const data = await sitevisionApi({ nodeId: id, version: this.dialog.version, apiMethod: 'nodes', options });
+
+          if (this.config.breadcrumbs.length > 1 && data[0]?.id !== BACK) {
+            data.unshift({
+              type: BACK,
+              id: BACK,
+              name: 'Go back',
+            });
+          }
+
+          return data;
         })
         .onBuildIndex(function (data) {
           if (!Array.isArray(data)) {
@@ -53,32 +68,27 @@ import Events from '../../_lib/shared/Events';
         .formatter(new Formatters.ListFormatter({ emptyText: 'No nodes found' }))
         .onAttach(async function () {
           const dialog = this.dialog;
-          const breadcrumbs = this.config.breadcrumbs = [ nodeId ];
+
+          if (this.config.breadcrumbs.length === 0) {
+            this.config.breadcrumbs = [ dialog.nodeId ];
+          }
 
           this.onClick = async (event) => {
             const target = event.target;
-            const BACK = 'back';
             if (!this.isLoading && /^button$/i.test(target.tagName)) {
               let id = target.dataset.nodeId;
 
               if (id === BACK) {
-                breadcrumbs.pop();
+                this.config.breadcrumbs.pop();
               } else {
-                breadcrumbs.push(id);
+                this.config.breadcrumbs.push(id);
               }
               
-              id = breadcrumbs[breadcrumbs.length - 1];
+              id = this.config.breadcrumbs[this.config.breadcrumbs.length - 1];
+              dialog.setNodeId(id);
 
               dialog.setLoading(true);
-              const data = await this.fetchData(id);
-              
-              if (id !== nodeId) {
-                data.unshift({
-                  type: BACK,
-                  id: BACK,
-                  name: 'Go back',
-                });
-              }
+              const data = await this.fetchData();
 
               this.setData(data);
               dialog.render();
@@ -96,7 +106,7 @@ import Events from '../../_lib/shared/Events';
       // Headless view
       new DialogView('Headless')
         .onFetchData(async function () {
-          return await sitevisionApi({ nodeId, version: this.dialog.version, apiMethod: 'headless' });
+          return await sitevisionApi({ nodeId: this.dialog.nodeId, version: this.dialog.version, apiMethod: 'headless' });
         })
         .formatter(new Formatters.JsonFormatter()),
 
@@ -113,7 +123,7 @@ import Events from '../../_lib/shared/Events';
           }
 
           const searchResult = await sitevisionApi({ path: 'Index Repository/Online', siteName: __siteName, version: this.dialog.version, apiMethod: 'search', options: {
-            query: `+id:${nodeId}`,
+            query: `+id:${this.dialog.nodeId}`,
             limit: 1,
             fields: ['*', 'nodeid'],
           } });
