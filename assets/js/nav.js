@@ -1,0 +1,1 @@
+const t="is-active";document.addEventListener("DOMContentLoaded",(()=>{document.querySelectorAll(".navbar-burger").forEach((e=>{e.addEventListener("click",(()=>{const s=document.getElementById(e.dataset.target);s&&(e.classList.toggle(t),s.classList.toggle(t),e.setAttribute("aria-expanded",e.classList.contains(t)),s.setAttribute("aria-hidden",!s.classList.contains(t)))}))}))}));

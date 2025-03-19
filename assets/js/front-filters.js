@@ -1,0 +1,1 @@
+import e from"./lib/FilterableList.js";((t,r)=>{const n=r.getElementById("front-filters");n&&t.addEventListener("load",(()=>{const t=new e(r.querySelectorAll(".front-bookmarklets__item"));t.addFilter(n.querySelector('[name="hideDiscontinued"]'),((e,t)=>{if(!t)return!1;return"true"===e.discontinued===t})),n.hidden=!1,t.applyFilters()}))})(window,document);

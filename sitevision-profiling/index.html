@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sitevision profiling</title>
+    <meta name="description" content="Easily toggle the profiling of rendered Sitevision modules.">
+    <link rel="stylesheet" href="/assets/css/main.css?v=0.12.1">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+  </head>
+  <body class="template-bookmarklet ">
+    <div class="page is-flex is-flex-direction-column">
+      <header class="page-header">
+        <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+          <div class="navbar-brand">
+            <a class="home-item navbar-item" href="/">
+              <svg class="home-item__icon icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=0.12.1#mdi-bookmark-multiple"></use></svg>
+              <span class="home-item__text is-family-secondary pr-4">Bookmarklets</span>
+            </a>
+
+            <button type="button" class="navbar-burger" aria-label="Menu" aria-expanded="false" data-target="menu">
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+            </button>
+          </div>
+
+          <div id="menu" class="navbar-menu">
+            <div class="navbar-end">
+              <div class="navbar-item">
+                <div class="buttons">
+                  <a class="button is-secondary" href="https://github.com/hampusn/bookmarklets#readme">
+                    <svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=0.12.1#mdi-github"></use></svg>
+                    <strong>Github</strong>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </header><!--! .page-header -->
+
+      <main class="page-main is-flex-grow-1 ">
+        
+
+        <div class="section">
+  <div class="container is-max-desktop">
+    <div class="content">
+      <h1 class="is-family-secondary">Sitevision profiling</h1><div class="message is-info">
+          <div class="message-body">
+            <svg class="icon icon--large" aria-hidden="true"><use href="/assets/img/icons.svg?v=0.12.1#mdi-information-slab-circle"></use></svg>
+            <strong>Sitevision profiling</strong> has been discontinued. Try <a href="/sitevision-development/">Sitevision development</a> instead.
+          </div>
+        </div><p>Sitevision has a feature which lets you view the rendering times of all the modules on the page. This feature is toggled by the query parameter <code>profiling</code> with the values <code>true</code> or <code>false</code>. The state is stored in your session, so you'll have to turn it off by yourself.</p>
+<p>This bookmarklet toggles the query parameter for you.</p>
+
+    </div>
+  </div>
+</div>
+
+<div class="section has-background-light">
+  <div class="container is-max-desktop">
+    <dl class="block is-flex-desktop is-flex-wrap-wrap is-justify-content-center">
+      <div class="is-flex mx-3 my-1">
+        <dt class="has-text-weight-semibold mr-2">Created</dt>
+        <dd>2016-09-10</dd>
+      </div>
+
+      
+        <div class="is-flex mx-3 my-1">
+          <dt class="has-text-weight-semibold mr-2">Updated</dt>
+          <dd>2023-01-09</dd>
+        </div>
+      
+
+      <div class="is-flex mx-3 my-1">
+        <dt class="has-text-weight-semibold mr-2">Bookmarklet size</dt>
+        <dd>480 B</dd>
+      </div>
+    </dl>
+
+    <div class="has-text-centered-desktop my-6">
+      <p class="is-size-5 mb-2">Drag this link to your bookmarks to save it.</p>
+      <a class="bookmarklet-button button is-link is-medium" href="javascript:!function()%7B%22use%20strict%22%3B((t%2Ce)%3D%3E%7Bconst%20n%3Dnew%20URL(t).searchParams%2Cr%3Dfunction(t)%7Bif(t.has(%22profiling%22))return%22true%22%3D%3D%3Dt.get(%22profiling%22).toLowerCase()%3Breturn%5B...e.getElementsByTagName(%22table%22)%5D.filter((t%3D%3E-1!%3D%3Dt.textContent.search(%2FProfiling%20results%2Fi))).length%3E0%7D(n)%3Bn.set(%22profiling%22%2Cr%3F%22false%22%3A%22true%22)%2Ct.search%3D%22%3F%22%2Bn.toString()%7D)(location%2Cdocument)%7D()%3B">
+        <svg class="bookmarklet__icon bookmarklet__icon icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=0.12.1#mdi-bookmark"></use></svg>
+        <svg class="bookmarklet__icon bookmarklet__icon--error icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=0.12.1#mdi-block-helper"></use></svg>
+        <svg class="bookmarklet__icon bookmarklet__icon--success icon" aria-hidden="true"><use href="/assets/img/icons.svg?v=0.12.1#mdi-check-bold"></use></svg>
+        <span>Sitevision profiling</span>
+      </a>
+    </div>
+
+    <div class="mt-6">
+      <h2 class="is-size-4 is-family-secondary">Bookmarklet code</h2><div class="mb-6">
+          <h3 class="is-size-5">profiling</h3>
+          <pre class="language-js"><code class="language-js"><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">location<span class="token punctuation">,</span> document</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> params <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">URL</span><span class="token punctuation">(</span>location<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>searchParams<span class="token punctuation">;</span><br>  <span class="token keyword">const</span> currentState <span class="token operator">=</span> <span class="token function">getCurrentState</span><span class="token punctuation">(</span>params<span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token comment">// Toggle state.</span><br>  params<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token string">'profiling'</span><span class="token punctuation">,</span> currentState <span class="token operator">?</span> <span class="token string">'false'</span> <span class="token operator">:</span> <span class="token string">'true'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token comment">// Update query string.</span><br>  location<span class="token punctuation">.</span>search <span class="token operator">=</span> <span class="token string">'?'</span> <span class="token operator">+</span> params<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token comment">/**<br>   * Gets the current state of profiling. Returns true if profiling is active, false otherwise.<br>   * <br>   * @param {URLSearchParams} params <br>   * @returns {boolean}<br>   */</span><br>  <span class="token keyword">function</span> <span class="token function">getCurrentState</span> <span class="token punctuation">(</span><span class="token parameter">params</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// Check if search param is already present and use that.</span><br>    <span class="token keyword">if</span> <span class="token punctuation">(</span>params<span class="token punctuation">.</span><span class="token function">has</span><span class="token punctuation">(</span><span class="token string">'profiling'</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>      <span class="token keyword">return</span> params<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">'profiling'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toLowerCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token string">'true'</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><br><br>    <span class="token comment">// Fallback to searching for the most likely table.</span><br>    <span class="token keyword">return</span> <span class="token punctuation">[</span><span class="token operator">...</span>document<span class="token punctuation">.</span><span class="token function">getElementsByTagName</span><span class="token punctuation">(</span><span class="token string">'table'</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span><span class="token parameter">table</span> <span class="token operator">=></span> table<span class="token punctuation">.</span>textContent<span class="token punctuation">.</span><span class="token function">search</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">Profiling results</span><span class="token regex-delimiter">/</span><span class="token regex-flags">i</span></span><span class="token punctuation">)</span> <span class="token operator">!==</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span>length <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">(</span>location<span class="token punctuation">,</span> document<span class="token punctuation">)</span></code></pre>
+        </div></div>
+  </div>
+</div>
+
+      </main><!--! .page-main -->
+
+      <footer class="page-footer section has-background-secondary-dark has-text-white py-5">
+        <div class="container">
+          <p class="has-text-centered">
+            <a class="page-footer__link has-text-white" href="https://github.com/hampusn/bookmarklets#readme">
+              <strong>bookmarklets</strong>
+              <svg class="icon" aria-label="External link"><use href="/assets/img/icons.svg?v=0.12.1#mdi-open-in-new"></use></svg>
+            </a>
+            is created by
+            <a class="page-footer__link has-text-white" href="https://hampus.io/">
+              <strong>Hampus Nordin</strong>
+              <svg class="icon" aria-label="External link"><use href="/assets/img/icons.svg?v=0.12.1#mdi-open-in-new"></use></svg>
+            </a>
+          </p>
+        </div>
+      </footer><!--! .page-footer -->
+    </div><!--! .page -->
+
+    <div id="bookmarklet-drag" class="bookmarklet-drag"></div>
+    <script type="module" src="/assets/js/main.js?v=0.12.1"></script>
+    <!-- Current page: /sitevision-profiling/ -->
+  </body>
+</html>
