@@ -138,6 +138,11 @@ export class Dialog {
       this.setLoading(false);
     };
 
+    const ctxContainer = this.el(this.ctxid);
+    const ctxInput = ctxContainer.querySelector('input');
+    const saveAndCancelBtns = ctxContainer.querySelectorAll('[data-ctx-action="save"], [data-ctx-action="cancel"]');
+    const editBtn = ctxContainer.querySelectorAll('[data-ctx-action="edit"]');
+
     const reloadView = async () => await changeView(this.current);
 
     const showCtxButtons = (btns) => {
@@ -150,33 +155,65 @@ export class Dialog {
       btns.forEach(btn => btn.classList.add('env-d--none'));
     };
 
+    const ctxIsOpen = () => ctxInput.readOnly === false;
+
+    const ctxSave = async () => {
+      this.setNodeId(ctxInput.value);
+      hideCtxButtons(saveAndCancelBtns);
+      showCtxButtons(editBtn);
+      ctxInput.readOnly = true;
+      await reloadView();
+    };
+
+    const ctxCancel = () => {
+      hideCtxButtons(saveAndCancelBtns);
+      showCtxButtons(editBtn);
+      ctxInput.value = this.nodeId;
+      ctxInput.readOnly = true;
+    };
+
     const ctxButtonCallback = async (event) => {
       if (!this.isLoading && /^button$/i.test(event.target.tagName)) {
         const action = event.target.dataset.ctxAction;
-        const ctxContainer = this.el(this.ctxid);
-        const ctxInput = ctxContainer.querySelector('input');
-        const saveAndCancelBtns = ctxContainer.querySelectorAll('[data-ctx-action="save"], [data-ctx-action="cancel"]');
-        const editBtn = ctxContainer.querySelectorAll('[data-ctx-action="edit"]');
 
         switch (action) {
           case 'edit':
             showCtxButtons(saveAndCancelBtns);
             hideCtxButtons(editBtn);
             ctxInput.readOnly = false;
+            ctxInput.focus();
+            ctxInput.setSelectionRange(0, ctxInput.value.length);
             break;
           case 'save':
-            this.setNodeId(ctxInput.value);
-            hideCtxButtons(saveAndCancelBtns);
-            showCtxButtons(editBtn);
-            ctxInput.readOnly = true;
-            await reloadView();
+            await ctxSave();
             break;
           case 'cancel':
-            hideCtxButtons(saveAndCancelBtns);
-            showCtxButtons(editBtn);
-            ctxInput.value = this.nodeId;
-            ctxInput.readOnly = true;
+            ctxCancel();
             break;
+        }
+      }
+    };
+
+    const ctxContainerKeydownCallback = async (event) => {
+      if (event.key === 'Escape' && ctxIsOpen()) {
+        event.stopImmediatePropagation();
+        ctxCancel();
+      } else if (event.key === 'Enter' && event.target === ctxInput) {
+        event.stopImmediatePropagation();
+        await ctxSave();
+      }
+    };
+
+    const ctxInputPasteCallback = async (event) => {
+      if (ctxIsOpen()) {
+        const str = event.clipboardData.getData('text/plain');
+        const matches = /^svid([0-9]{1,3})_([a-z0-9_]+)$/i.exec(str);
+
+        if (matches) {
+          event.preventDefault();
+
+          const [ _, p1, p2 ] = matches;
+          ctxInput.value = `${p1}.${p2}`;
         }
       }
     };
@@ -200,6 +237,8 @@ export class Dialog {
     };
 
     Events.onClick(this.el(this.ctxid), ctxButtonCallback);
+    Events.onKeydown(ctxContainer, ctxContainerKeydownCallback);
+    Events.onPaste(ctxInput, ctxInputPasteCallback);
     Events.onClick(this.el(this.bgid), buttonsCallback);
     Events.onInput(this.el(this.siid), filterInputCallback);
     Events.onKeydown(this.el(this.siid), filterKeydownCallback);
