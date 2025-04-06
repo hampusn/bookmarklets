@@ -75,6 +75,30 @@ import Events from '../../_lib/shared/Events';
 
           this.onClick = async (event) => {
             const target = event.target;
+            
+            if (target.dataset.dropdown !== undefined) {
+              if (this.config.openDropdown) {
+                this.config.openDropdown.style.zIndex = 0;
+              }
+
+              if (target.ariaExpanded === 'true') {
+                (this.config.openDropdown = target.parentElement).style.zIndex = 1;
+              }
+
+              return;
+            }
+
+            if (target.dataset.copy !== undefined) {
+              try {
+                await navigator.clipboard.writeText(target.dataset.copy);
+                target.closest('.env-dropdown').querySelector('button[data-dropdown]').click();
+              } catch (error) {
+                dialog.renderError(error.message);
+              }
+
+              return;
+            }
+
             if (!this.isLoading && /^button$/i.test(target.tagName)) {
               let id = target.dataset.nodeId;
 

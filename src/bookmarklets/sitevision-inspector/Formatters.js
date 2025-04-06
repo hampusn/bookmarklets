@@ -1,5 +1,6 @@
 import NodeTypes from './NodeTypes';
 import Icons from './Icons';
+import uid from '../../_lib/shared/uid';
 
 const ICONS_DICT = {
   [NodeTypes.ARCHIVE]: Icons.ARCHIVE,
@@ -113,17 +114,43 @@ export class ListFormatter extends Formatter {
     if (!Array.isArray(data) || data.length === 0) {
       return this.emptyText;
     }
-
+    
+    const idPool = Array(data.length).fill().map(() => {
+      const id = uid();
+      return [
+        id + '_btn',
+        id + '_menu',
+      ];
+    });
+    
     return (
       `<ul class="env-nav env-nav--sidenav">
-        ${data.map(item =>
-          `<li class="env-nav__item" data-filter-item>
+        ${data.map((item, j) =>
+          `<li class="env-nav__item" style="position:relative;" data-filter-item>
             ${[NodeTypes.PAGE, NodeTypes.ARTICLE, NodeTypes.LINK, NodeTypes.GROUP_PAGE].includes(item.type) ?
-              `<a class="env-nav__link env-d--flex" href="${s(item.properties.URI)}">${i(item.type)}${s(item.name)}</a>`
+              `<a class="env-nav__link env-d--flex env-p-right--xx-large" href="${s(item.properties.URI)}">${i(item.type)}${s(item.name)}</a>`
             :
               // Envision does not yet have utility class for justify-content: start;
               // env-d--flex does not override display of env-button in older SV versions so we need to inline display flex.
-              `<button class="env-nav__link env-button env-button--link env-w--100" style="justify-content:start;display:flex;border-radius:0;" data-node-id="${s(item.id)}">${i(item.type)}${s(item.name)}</button>`
+              `<button class="env-nav__link env-button env-button--link env-w--100 env-p-right--xx-large" style="justify-content:start;display:flex;border-radius:0;" data-node-id="${s(item.id)}">${i(item.type)}${s(item.name)}</button>`
+            }
+            ${item.type !== 'back' ?
+              `<div class="env-dropdown" style="position:absolute;top:50%;right:0;transform:translateY(-50%);z-index:0;">
+                <button id="${idPool[j][0]}" aria-controls="${idPool[j][1]}" class="env-button env-button--slim env-button--icon" type="button" aria-expanded="false" aria-haspopup="menu" data-placement="end" data-dropdown>
+                  <svg class="env-icon" style="pointer-events:none;"><use href="/sitevision/envision-icons.svg#icon-menu-dots"></use></svg>
+                  <span class="env-assistive-text">${s(item.name)}, actions</span>
+                </button>
+                <ul id="${idPool[j][1]}" aria-labelledby="${idPool[j][0]}" role="menu" class="env-dropdown__menu">
+                  <li role="presentation">
+                    <button type="button" role="menuitem" class="env-dropdown__item" data-node-id="${s(item.id)}">Inspect</button>
+                  </li>
+                  <li role="presentation">
+                    <button type="button" role="menuitem" class="env-dropdown__item" data-copy="${s(item.id)}">Copy ID</button>
+                  </li>
+                </ul>
+              </div>`
+            :
+              ''
             }
           </li>`
         ).join('')}
