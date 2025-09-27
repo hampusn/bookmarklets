@@ -2,7 +2,7 @@ import createElement from '../../_lib/shared/create-element';
 import { getInstance } from '../../_lib/shared/Dialog';
 import Switch from '../../_lib/shared/Switch';
 
-((window, document) => {
+(async (window, document) => {
   // Bail early if envision is not found.
   if (!window.envision) {
     console.warn('Envision not found. Exiting since most likely not Sitevision.');
@@ -21,10 +21,10 @@ import Switch from '../../_lib/shared/Switch';
     LOCATION.search = searchParams;
   };
 
-  getInstance('sitevision-development-dialog', {
+  (await getInstance('sitevision-development-dialog', {
     title: 'Sitevision development',
   })
-    .init(() => {
+    .init(async () => {
       const PROFILING_PARAM = 'profiling';
       const JSDEBUG_PARAM = 'jsdebug';
       const VERSION_PARAM = 'version';
@@ -94,6 +94,6 @@ import Switch from '../../_lib/shared/Switch';
       }
 
       return switchesContainer;
-    })
+    }))
     .toggle();
 })(window, window.document)
