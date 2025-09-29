@@ -40,12 +40,13 @@ import { groupByVersionPrefix } from './utils';
 
       let first = true;
       for (const group of groupedApps) {
+        const { hasReactVersion } = group;
         container.appendChild(createElement(`
           <table class="env-table env-table--zebra env-table--small env-w--100 ${first ? '' : 'env-m-top--large'}">
             <caption>${group.title}</caption>
-            <thead><tr><th>App identifier</th><th>App version</th><th>React version</th></tr></thead>
+            <thead><tr><th>App identifier</th><th>App version</th>${hasReactVersion ? '<th>React version</th>' : ''}</tr></thead>
             <tbody>${group.items.map(({ appId, appVersion, reactVersion }) =>
-              `<tr><td>${appId}</td><td>${appVersion}</td><td>${reactVersion}</td></tr>`).join('')}
+              `<tr><td>${appId}</td><td>${appVersion}</td>${hasReactVersion ? `<td>${reactVersion}</td>` : ''}</tr>`).join('')}
             </tbody>
           </table>
         `));

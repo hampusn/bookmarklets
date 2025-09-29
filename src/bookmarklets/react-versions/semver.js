@@ -1,11 +1,32 @@
-export const parseVersion = v => v.split('.').map(n => parseInt(n, 10));
+/**
+ * Returns version as array of integers. Assumes no text suffix with hyphen exists in string.
+ * 
+ * @param {string} versionString
+ * @
+ * @returns {number[]}
+ */
+export const parseVersion = (versionString) => versionString.split('.').map((part) => parseInt(part, 10));
 
-export const compareSemver = (a, b) => {
-  const pa = parseVersion(a), pb = parseVersion(b);
-  const len = Math.max(pa.length, pb.length);
-  for (let i = 0; i < len; i++) {
-    const na = pa[i] || 0, nb = pb[i] || 0;
-    if (na !== nb) return na - nb;
+/**
+ * Sort callback for comparing and sorting semver strings.
+ * 
+ * @param {string} versionStringA 
+ * @param {string} versionStringB 
+ * @returns 
+ */
+export const compareSemver = (versionStringA, versionStringB) => {
+  const pa = parseVersion(versionStringA);
+  const pb = parseVersion(versionStringB);
+  const n = Math.max(pa.length, pb.length);
+
+  for (let i = 0; i < n; i++) {
+    const na = pa[i] || 0;
+    const nb = pb[i] || 0;
+
+    if (na !== nb) {
+      return na - nb;
+    }
   }
+
   return 0;
 };
